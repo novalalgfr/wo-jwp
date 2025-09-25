@@ -132,16 +132,19 @@ export function DataTable<TData, TValue>({
 			)}
 
 			{/* Table */}
-			<div className="rounded-md border">
+			<div className="rounded-md border overflow-hidden">
 				<Table>
-					<TableHeader>
+					<TableHeader className="bg-black">
 						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id}>
+							<TableRow
+								key={headerGroup.id}
+								className="border-gray-700 hover:bg-black"
+							>
 								{headerGroup.headers.map((header) => {
 									return (
 										<TableHead
 											key={header.id}
-											className="font-medium"
+											className="font-medium text-white border-gray-700"
 										>
 											{header.isPlaceholder
 												? null
@@ -232,7 +235,7 @@ export function createSortableHeader<TData>(title: string) {
 			<Button
 				variant="ghost"
 				onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				className="h-auto p-0 font-medium hover:bg-transparent"
+				className="h-auto p-0 -ml-3 font-medium hover:text-white hover:bg-transparent cursor-pointer"
 			>
 				{title}
 				<ArrowUpDown className="ml-2 h-4 w-4" />

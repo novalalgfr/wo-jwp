@@ -53,7 +53,7 @@ export default function Home() {
 	const columns: ColumnDef<User>[] = [
 		{
 			accessorKey: 'name',
-			header: createSortableHeader<User>('Name')
+			header: 'Name'
 		},
 		{
 			accessorKey: 'email',
