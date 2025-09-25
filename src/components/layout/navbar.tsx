@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
 	NavigationMenu,
@@ -11,15 +12,17 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
-import { Handbag, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const pathname = usePathname();
 
 	const navItems = [
 		{ title: 'Beranda', href: '/' },
-		{ title: 'Katalog Paket Wedding', href: '/' },
-		{ title: 'Kontak Kami', href: '/' }
+		{ title: 'Katalog Paket Wedding', href: '/katalog-paket-wedding' },
+		{ title: 'Kontak Kami', href: '/kontak-kami' }
 	];
 
 	return (
@@ -41,24 +44,27 @@ export function Navbar() {
 						<NavigationMenu>
 							<NavigationMenuList>
 								{/* Regular Nav Items */}
-								{navItems.map((item) => (
-									<NavigationMenuItem key={item.title}>
-										<NavigationMenuLink asChild>
-											<Link
-												href={item.href}
-												className="inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium transition-all hover:opacity-70 focus:opacity-70 focus:outline-none !bg-transparent"
-											>
-												{item.title}
-											</Link>
-										</NavigationMenuLink>
-									</NavigationMenuItem>
-								))}
+								{navItems.map((item) => {
+									const isActive = pathname === item.href;
+
+									return (
+										<NavigationMenuItem key={item.title}>
+											<NavigationMenuLink asChild>
+												<Link
+													href={item.href}
+													className={cn(
+														'inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm text-black transition-all !bg-transparent',
+														isActive ? 'font-bold text-primary' : 'font-medium'
+													)}
+												>
+													{item.title}
+												</Link>
+											</NavigationMenuLink>
+										</NavigationMenuItem>
+									);
+								})}
 							</NavigationMenuList>
 						</NavigationMenu>
-					</div>
-
-					<div>
-						<Handbag className="h-5 w-5" />
 					</div>
 
 					{/* Mobile Menu Button */}
@@ -86,16 +92,23 @@ export function Navbar() {
 								</SheetHeader>
 								<div className="flex flex-col space-y-4 mt-4">
 									{/* Mobile Nav Items */}
-									{navItems.map((item) => (
-										<Link
-											key={item.title}
-											href={item.href}
-											onClick={() => setIsOpen(false)}
-											className="text-sm font-medium transition-colors hover:text-primary"
-										>
-											{item.title}
-										</Link>
-									))}
+									{navItems.map((item) => {
+										const isActive = pathname === item.href;
+
+										return (
+											<Link
+												key={item.title}
+												href={item.href}
+												onClick={() => setIsOpen(false)}
+												className={cn(
+													'text-sm transition-colors hover:text-primary',
+													isActive ? 'font-bold text-primary' : 'font-medium'
+												)}
+											>
+												{item.title}
+											</Link>
+										);
+									})}
 
 									<Separator />
 
