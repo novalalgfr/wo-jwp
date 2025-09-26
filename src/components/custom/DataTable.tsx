@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className={`w-full ${className}`}>
+		<div className={`w-full max-w-sm sm:max-w-none ${className}`}>
 			{/* Toolbar */}
 			{(showSearch || showColumnToggle) && (
 				<div className="flex items-center justify-between py-4">
@@ -132,7 +132,7 @@ export function DataTable<TData, TValue>({
 			)}
 
 			{/* Table */}
-			<div className="rounded-md border overflow-hidden">
+			<div className="rounded-md border overflow-hidden bg-white">
 				<Table>
 					<TableHeader className="bg-black">
 						{table.getHeaderGroups().map((headerGroup) => (
