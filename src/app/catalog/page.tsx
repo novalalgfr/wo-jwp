@@ -172,7 +172,7 @@ export default function CatalogPage() {
 					{selectedPackage && (
 						<>
 							{showOrderForm ? (
-								<div className="p-8">
+								<div className="p-4">
 									<DialogHeader className="mb-4">
 										<DialogTitle className="text-2xl">Order Form</DialogTitle>
 									</DialogHeader>
