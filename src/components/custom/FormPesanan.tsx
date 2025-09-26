@@ -4,39 +4,39 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import TextBox from './TextBox';
 
-interface PaketWedding {
+interface WeddingPackage {
 	id: number;
-	nama_paket: string;
-	deskripsi_paket: string;
-	harga_paket: number;
-	gambar_paket: string | null;
+	package_name: string;
+	package_description: string;
+	package_price: number;
+	package_image: string | null;
 }
 
-interface PesananFormData {
-	nama_pemesan: string;
-	no_telp: string;
+interface OrderFormData {
+	customer_name: string;
+	phone_number: string;
 	email: string;
 }
 
-interface FormPesananProps {
-	selectedPackage: PaketWedding;
+interface OrderFormProps {
+	selectedPackage: WeddingPackage;
 	onSuccess: () => void;
 	onBack: () => void;
 	formatCurrency: (amount: number) => string;
 }
 
-const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: FormPesananProps) => {
-	const [formData, setFormData] = useState<PesananFormData>({
-		nama_pemesan: '',
-		no_telp: '',
+const OrderForm = ({ selectedPackage, onSuccess, onBack, formatCurrency }: OrderFormProps) => {
+	const [formData, setFormData] = useState<OrderFormData>({
+		customer_name: '',
+		phone_number: '',
 		email: ''
 	});
 	const [submitting, setSubmitting] = useState(false);
 
 	const resetForm = () => {
 		setFormData({
-			nama_pemesan: '',
-			no_telp: '',
+			customer_name: '',
+			phone_number: '',
 			email: ''
 		});
 	};
@@ -49,13 +49,13 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 		setSubmitting(true);
 
 		const submitFormData = new FormData();
-		submitFormData.append('paket_id', selectedPackage.id.toString());
-		submitFormData.append('nama_pemesan', formData.nama_pemesan);
-		submitFormData.append('no_telp', formData.no_telp);
+		submitFormData.append('package_id', selectedPackage.id.toString());
+		submitFormData.append('customer_name', formData.customer_name);
+		submitFormData.append('phone_number', formData.phone_number);
 		submitFormData.append('email', formData.email);
 
 		try {
-			const response = await fetch('/api/pesanan', {
+			const response = await fetch('/api/orders', {
 				method: 'POST',
 				body: submitFormData
 			});
@@ -66,11 +66,11 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 				resetForm();
 				onSuccess();
 			} else {
-				alert(result.message || 'Terjadi kesalahan');
+				alert(result.message || 'An error occurred');
 			}
 		} catch (error) {
 			console.error('Error submitting form:', error);
-			alert('Terjadi kesalahan');
+			alert('An error occurred');
 		} finally {
 			setSubmitting(false);
 		}
@@ -80,12 +80,12 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 		<>
 			<div className="mb-4">
 				<h4>
-					Package Selected:{' '}
+					Selected Package:{' '}
 					<span className="font-semibold">
-						{selectedPackage.nama_paket.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
+						{selectedPackage.package_name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
 					</span>
 				</h4>
-				<p className="text-green-600 font-medium">{formatCurrency(selectedPackage.harga_paket)}</p>
+				<p className="text-green-600 font-medium">{formatCurrency(selectedPackage.package_price)}</p>
 			</div>
 
 			<form
@@ -93,22 +93,22 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 				className="space-y-6"
 			>
 				<TextBox
-					id="nama_pemesan"
+					id="customer_name"
 					label="Full Name"
 					placeholder="Enter your full name"
 					validation="text"
-					value={formData.nama_pemesan}
-					onChange={(e) => setFormData((prev) => ({ ...prev, nama_pemesan: e.target.value }))}
+					value={formData.customer_name}
+					onChange={(e) => setFormData((prev) => ({ ...prev, customer_name: e.target.value }))}
 					required
 				/>
 
 				<TextBox
-					id="no_telp"
+					id="phone_number"
 					label="Phone Number"
 					placeholder="Enter your phone number"
 					validation="number"
-					value={formData.no_telp}
-					onChange={(e) => setFormData((prev) => ({ ...prev, no_telp: e.target.value }))}
+					value={formData.phone_number}
+					onChange={(e) => setFormData((prev) => ({ ...prev, phone_number: e.target.value }))}
 					required
 				/>
 
@@ -145,4 +145,4 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 	);
 };
 
-export default FormPesanan;
+export default OrderForm;

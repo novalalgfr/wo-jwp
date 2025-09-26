@@ -9,23 +9,22 @@ import { CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-interface PaketWedding {
+interface WeddingPackage {
 	id: number;
-	nama_paket: string;
-	deskripsi_paket: string;
-	harga_paket: number;
-	gambar_paket: string | null;
+	package_name: string;
+	package_description: string;
+	package_price: number;
+	package_image: string | null;
 }
 
-// Skeleton Loader Component
 const PaketCardSkeleton = () => <div className="h-[550px] rounded-4xl bg-gray-200 animate-pulse"></div>;
 
 export default function CatalogPage() {
-	const [paketList, setPaketList] = useState<PaketWedding[]>([]);
+	const [paketList, setPaketList] = useState<WeddingPackage[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const [selectedPackage, setSelectedPackage] = useState<PaketWedding | null>(null);
+	const [selectedPackage, setSelectedPackage] = useState<WeddingPackage | null>(null);
 	const [showOrderForm, setShowOrderForm] = useState(false);
 	const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
@@ -37,7 +36,7 @@ export default function CatalogPage() {
 		try {
 			setLoading(true);
 			setError(null); // Reset error state
-			const response = await fetch('/api/paket-wedding');
+			const response = await fetch('/api/wedding-packages');
 
 			if (!response.ok) {
 				throw new Error('Gagal memuat data paket. Silakan coba lagi.');
@@ -60,7 +59,7 @@ export default function CatalogPage() {
 		}
 	};
 
-	const handleViewDetail = (packageData: PaketWedding) => {
+	const handleViewDetail = (packageData: WeddingPackage) => {
 		setSelectedPackage(packageData);
 		setShowOrderForm(false);
 		setDialogOpen(true);
@@ -144,9 +143,9 @@ export default function CatalogPage() {
 						{paketList.map((paket) => (
 							<PaketCard
 								key={paket.id}
-								price={formatCurrency(paket.harga_paket)}
-								title={formatTitle(paket.nama_paket)}
-								imageUrl={paket.gambar_paket || undefined}
+								price={formatCurrency(paket.package_price)}
+								title={formatTitle(paket.package_name)}
+								imageUrl={paket.package_image || undefined}
 								onButtonClick={() => handleViewDetail(paket)}
 							/>
 						))}
@@ -187,26 +186,26 @@ export default function CatalogPage() {
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start p-4">
 									<div className="relative w-full aspect-square md:aspect-[3/4] rounded-3xl overflow-hidden">
 										<Image
-											src={selectedPackage.gambar_paket || '/images/placeholder.jpg'}
-											alt={selectedPackage.nama_paket}
+											src={selectedPackage.package_image || '/images/placeholder.jpg'}
+											alt={selectedPackage.package_name}
 											fill
 											className="object-cover"
 											sizes="(max-width: 768px) 100vw, 50vw"
 										/>
 									</div>
-									<div className="py-4 pr-4 flex flex-col h-full">
+									<div className="pr-4 flex flex-col h-full">
 										<DialogHeader>
 											<DialogTitle className="text-4xl leading-tight mb-2">
-												{formatTitle(selectedPackage.nama_paket)}
+												{formatTitle(selectedPackage.package_name)}
 											</DialogTitle>
 										</DialogHeader>
 										<p className="text-2xl font-semibold text-gray-800 mb-6">
-											{formatCurrency(selectedPackage.harga_paket)}
+											{formatCurrency(selectedPackage.package_price)}
 										</p>
 										<div className="mb-8">
 											<h4 className="font-semibold mb-2 text-lg">Package Description:</h4>
 											<div className="text-gray-600 whitespace-pre-wrap leading-relaxed">
-												{selectedPackage.deskripsi_paket}
+												{selectedPackage.package_description}
 											</div>
 										</div>
 

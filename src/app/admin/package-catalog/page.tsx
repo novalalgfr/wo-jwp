@@ -21,19 +21,19 @@ import {
 } from '@/components/ui/alert-dialog';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
-interface PaketWedding {
+interface WeddingPackage {
 	id: number;
-	nama_paket: string;
-	deskripsi_paket: string;
-	harga_paket: number;
-	gambar_paket: string | null;
+	package_name: string;
+	package_description: string;
+	package_price: number;
+	package_image: string | null;
 }
 
 interface FormData {
-	nama_paket: string;
-	deskripsi_paket: string;
-	harga_paket: string;
-	gambar_paket: File | null;
+	package_name: string;
+	package_description: string;
+	package_price: string;
+	package_image: File | null;
 }
 
 interface DeleteDialogState {
@@ -48,7 +48,7 @@ interface SuccessDialogState {
 }
 
 export default function PackageCatalogPage() {
-	const [paketWedding, setPaketWedding] = useState<PaketWedding[]>([]);
+	const [weddingPackages, setWeddingPackages] = useState<WeddingPackage[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [deleteDialog, setDeleteDialog] = useState<DeleteDialogState>({ open: false, id: null });
@@ -61,28 +61,28 @@ export default function PackageCatalogPage() {
 	const [currentId, setCurrentId] = useState<number | null>(null);
 
 	const [formData, setFormData] = useState<FormData>({
-		nama_paket: '',
-		deskripsi_paket: '',
-		harga_paket: '',
-		gambar_paket: null
+		package_name: '',
+		package_description: '',
+		package_price: '',
+		package_image: null
 	});
 
-	const columns: ColumnDef<PaketWedding>[] = [
+	const columns: ColumnDef<WeddingPackage>[] = [
 		{
 			id: 'no',
 			header: 'No',
 			cell: ({ row }) => <div className="font-medium">{row.index + 1}</div>
 		},
 		{
-			accessorKey: 'nama_paket',
-			header: createSortableHeader<PaketWedding>('Package Name'),
-			cell: ({ row }) => <div className="font-medium">{row.getValue('nama_paket')}</div>
+			accessorKey: 'package_name',
+			header: createSortableHeader<WeddingPackage>('Package Name'),
+			cell: ({ row }) => <div className="font-medium">{row.getValue('package_name')}</div>
 		},
 		{
-			accessorKey: 'deskripsi_paket',
+			accessorKey: 'package_description',
 			header: 'Description',
 			cell: ({ row }) => {
-				const desc = row.getValue('deskripsi_paket') as string;
+				const desc = row.getValue('package_description') as string;
 				return (
 					<div className="max-w-xs">
 						<p
@@ -96,30 +96,30 @@ export default function PackageCatalogPage() {
 			}
 		},
 		{
-			accessorKey: 'harga_paket',
-			header: createSortableHeader<PaketWedding>('Price'),
+			accessorKey: 'package_price',
+			header: createSortableHeader<WeddingPackage>('Price'),
 			cell: ({ row }) => {
-				const harga = parseFloat(row.getValue('harga_paket') as string);
+				const price = parseFloat(row.getValue('package_price') as string);
 				return (
 					<div className="font-medium">
 						{new Intl.NumberFormat('id-ID', {
 							style: 'currency',
 							currency: 'IDR'
-						}).format(harga)}
+						}).format(price)}
 					</div>
 				);
 			}
 		},
 		{
-			accessorKey: 'gambar_paket',
+			accessorKey: 'package_image',
 			header: 'Image',
 			cell: ({ row }) => {
-				const gambar = row.getValue('gambar_paket') as string | null;
-				return gambar ? (
+				const image = row.getValue('package_image') as string | null;
+				return image ? (
 					<div className="relative w-16 h-16">
 						<Image
-							src={gambar}
-							alt={row.getValue('nama_paket') as string}
+							src={image}
+							alt={row.getValue('package_name') as string}
 							fill
 							className="object-cover rounded"
 							sizes="64px"
@@ -132,7 +132,7 @@ export default function PackageCatalogPage() {
 				);
 			}
 		},
-		createActionColumn<PaketWedding>((row: PaketWedding) => (
+		createActionColumn<WeddingPackage>((row: WeddingPackage) => (
 			<>
 				<DropdownMenuItem
 					onClick={() => handleEdit(row)}
@@ -153,16 +153,16 @@ export default function PackageCatalogPage() {
 	];
 
 	useEffect(() => {
-		fetchPaketWedding();
+		fetchWeddingPackages();
 	}, []);
 
-	const fetchPaketWedding = async (): Promise<void> => {
+	const fetchWeddingPackages = async (): Promise<void> => {
 		try {
-			const response = await fetch('/api/paket-wedding');
+			const response = await fetch('/api/wedding-packages');
 			const result = await response.json();
-			setPaketWedding(result.data || []);
+			setWeddingPackages(result.data || []);
 		} catch (error) {
-			console.error('Error fetching paket wedding:', error);
+			console.error('Error fetching wedding packages:', error);
 		} finally {
 			setLoading(false);
 		}
@@ -170,10 +170,10 @@ export default function PackageCatalogPage() {
 
 	const resetForm = (): void => {
 		setFormData({
-			nama_paket: '',
-			deskripsi_paket: '',
-			harga_paket: '',
-			gambar_paket: null
+			package_name: '',
+			package_description: '',
+			package_price: '',
+			package_image: null
 		});
 		setEditMode(false);
 		setCurrentId(null);
@@ -187,12 +187,12 @@ export default function PackageCatalogPage() {
 		e.preventDefault();
 
 		const submitFormData = new FormData();
-		submitFormData.append('nama_paket', formData.nama_paket);
-		submitFormData.append('deskripsi_paket', formData.deskripsi_paket);
-		submitFormData.append('harga_paket', formData.harga_paket);
+		submitFormData.append('package_name', formData.package_name);
+		submitFormData.append('package_description', formData.package_description);
+		submitFormData.append('package_price', formData.package_price);
 
-		if (formData.gambar_paket) {
-			submitFormData.append('gambar_paket', formData.gambar_paket);
+		if (formData.package_image) {
+			submitFormData.append('package_image', formData.package_image);
 		}
 
 		if (editMode && currentId) {
@@ -201,7 +201,7 @@ export default function PackageCatalogPage() {
 
 		try {
 			const method = editMode ? 'PUT' : 'POST';
-			const response = await fetch('/api/paket-wedding', {
+			const response = await fetch('/api/wedding-packages', {
 				method,
 				body: submitFormData
 			});
@@ -209,7 +209,7 @@ export default function PackageCatalogPage() {
 			const result = await response.json();
 
 			if (response.ok) {
-				await fetchPaketWedding();
+				await fetchWeddingPackages();
 				setDialogOpen(false);
 				resetForm();
 				showSuccessDialog(editMode ? 'edit' : 'create', result.message);
@@ -222,12 +222,12 @@ export default function PackageCatalogPage() {
 		}
 	};
 
-	const handleEdit = (row: PaketWedding): void => {
+	const handleEdit = (row: WeddingPackage): void => {
 		setFormData({
-			nama_paket: row.nama_paket,
-			deskripsi_paket: row.deskripsi_paket,
-			harga_paket: row.harga_paket.toString(),
-			gambar_paket: null
+			package_name: row.package_name,
+			package_description: row.package_description,
+			package_price: row.package_price.toString(),
+			package_image: null
 		});
 		setCurrentId(row.id);
 		setEditMode(true);
@@ -236,21 +236,21 @@ export default function PackageCatalogPage() {
 
 	const handleDelete = async (): Promise<void> => {
 		try {
-			const response = await fetch(`/api/paket-wedding?id=${deleteDialog.id}`, {
+			const response = await fetch(`/api/wedding-packages?id=${deleteDialog.id}`, {
 				method: 'DELETE'
 			});
 
 			const result = await response.json();
 
 			if (response.ok) {
-				await fetchPaketWedding();
+				await fetchWeddingPackages();
 				setDeleteDialog({ open: false, id: null });
 				showSuccessDialog('delete', result.message);
 			} else {
 				alert(result.message || 'An error occurred');
 			}
 		} catch (error) {
-			console.error('Error deleting paket wedding:', error);
+			console.error('Error deleting wedding package:', error);
 			alert('An error occurred');
 		}
 	};
@@ -343,8 +343,8 @@ export default function PackageCatalogPage() {
 								label="Package Name"
 								placeholder="Enter package name"
 								validation="text"
-								value={formData.nama_paket}
-								onChange={(e) => setFormData((prev) => ({ ...prev, nama_paket: e.target.value }))}
+								value={formData.package_name}
+								onChange={(e) => setFormData((prev) => ({ ...prev, package_name: e.target.value }))}
 								required
 							/>
 
@@ -354,8 +354,10 @@ export default function PackageCatalogPage() {
 								placeholder="Enter package description"
 								validation="text"
 								type="textarea"
-								value={formData.deskripsi_paket}
-								onChange={(e) => setFormData((prev) => ({ ...prev, deskripsi_paket: e.target.value }))}
+								value={formData.package_description}
+								onChange={(e) =>
+									setFormData((prev) => ({ ...prev, package_description: e.target.value }))
+								}
 								required
 							/>
 
@@ -364,16 +366,16 @@ export default function PackageCatalogPage() {
 								label="Package Price"
 								placeholder="Enter package price"
 								validation="number"
-								value={formData.harga_paket}
-								onChange={(e) => setFormData((prev) => ({ ...prev, harga_paket: e.target.value }))}
+								value={formData.package_price}
+								onChange={(e) => setFormData((prev) => ({ ...prev, package_price: e.target.value }))}
 								required
 							/>
 
 							<ImageUpload
 								id="gambar_paket"
 								label="Package Image"
-								value={formData.gambar_paket}
-								onChange={(file) => setFormData((prev) => ({ ...prev, gambar_paket: file }))}
+								value={formData.package_image}
+								onChange={(file) => setFormData((prev) => ({ ...prev, package_image: file }))}
 								maxSize={5}
 							/>
 
@@ -400,9 +402,9 @@ export default function PackageCatalogPage() {
 
 			<DataTable
 				columns={columns}
-				data={paketWedding}
+				data={weddingPackages}
 				showColumnToggle={false}
-				searchKey="nama_paket"
+				searchKey="package_name"
 				searchPlaceholder="Search for a package..."
 				emptyMessage="No wedding packages found."
 			/>
@@ -440,7 +442,7 @@ export default function PackageCatalogPage() {
 					<DialogHeader>
 						<DialogTitle className="text-center text-2xl pt-4">{successContent.title}</DialogTitle>
 					</DialogHeader>
-					<div className="text-center space-y-4 p-6">
+					<div className="text-center space-y-4">
 						<div
 							className={`mx-auto w-20 h-20 ${successContent.bgColor} rounded-full flex items-center justify-center`}
 						>

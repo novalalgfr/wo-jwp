@@ -17,20 +17,20 @@ import {
 	AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 
-interface Pesanan {
+interface Order {
 	id: number;
-	paket_id: number;
-	nama_pemesan: string;
-	no_telp: string;
+	package_id: number;
+	customer_name: string;
+	phone_number: string;
 	email: string;
 	status: 'request' | 'approved' | 'rejected';
-	nama_paket?: string; // From join with paket_wedding
+	package_name?: string;
 	created_at?: string;
 }
 
 interface StatusUpdateDialog {
 	open: boolean;
-	pesananId: number | null;
+	orderId: number | null;
 	currentStatus: string;
 	newStatus: 'approved' | 'rejected';
 }
@@ -43,11 +43,11 @@ interface SuccessDialog {
 }
 
 export default function OrdersPage() {
-	const [pesanan, setPesanan] = useState<Pesanan[]>([]);
+	const [orders, setOrders] = useState<Order[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [statusDialog, setStatusDialog] = useState<StatusUpdateDialog>({
 		open: false,
-		pesananId: null,
+		orderId: null,
 		currentStatus: '',
 		newStatus: 'approved'
 	});
@@ -95,24 +95,24 @@ export default function OrdersPage() {
 		}
 	};
 
-	const handleStatusUpdate = (pesananId: number, currentStatus: string, newStatus: 'approved' | 'rejected') => {
+	const handleStatusUpdate = (orderId: number, currentStatus: string, newStatus: 'approved' | 'rejected') => {
 		setStatusDialog({
 			open: true,
-			pesananId,
+			orderId,
 			currentStatus,
 			newStatus
 		});
 	};
 
 	const confirmStatusUpdate = async () => {
-		if (!statusDialog.pesananId) return;
+		if (!statusDialog.orderId) return;
 
 		try {
 			const formData = new FormData();
-			formData.append('id', statusDialog.pesananId.toString());
+			formData.append('id', statusDialog.orderId.toString());
 			formData.append('status', statusDialog.newStatus);
 
-			const response = await fetch('/api/pesanan', {
+			const response = await fetch('/api/orders', {
 				method: 'PUT',
 				body: formData
 			});
@@ -120,8 +120,8 @@ export default function OrdersPage() {
 			const result = await response.json();
 
 			if (response.ok) {
-				await fetchPesanan();
-				setStatusDialog({ open: false, pesananId: null, currentStatus: '', newStatus: 'approved' });
+				await fetchOrders();
+				setStatusDialog({ open: false, orderId: null, currentStatus: '', newStatus: 'approved' });
 
 				setSuccessDialog({
 					open: true,
@@ -141,22 +141,22 @@ export default function OrdersPage() {
 		}
 	};
 
-	const columns: ColumnDef<Pesanan>[] = [
+	const columns: ColumnDef<Order>[] = [
 		{
 			id: 'no',
 			header: 'No',
 			cell: ({ row }) => <div className="font-medium">{row.index + 1}</div>
 		},
 		{
-			accessorKey: 'nama_pemesan',
-			header: createSortableHeader<Pesanan>('Customer Name'),
-			cell: ({ row }) => <div className="font-medium">{row.getValue('nama_pemesan')}</div>
+			accessorKey: 'customer_name',
+			header: createSortableHeader<Order>('Customer Name'),
+			cell: ({ row }) => <div className="font-medium">{row.getValue('customer_name')}</div>
 		},
 		{
-			accessorKey: 'nama_paket',
+			accessorKey: 'package_name',
 			header: 'Wedding Package',
 			cell: ({ row }) => {
-				const value = row.getValue<string>('nama_paket');
+				const value = row.getValue<string>('package_name');
 				return (
 					<div className="font-medium">
 						{value ? value.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()) : '-'}
@@ -165,9 +165,9 @@ export default function OrdersPage() {
 			}
 		},
 		{
-			accessorKey: 'no_telp',
-			header: 'Phone Number',
-			cell: ({ row }) => <div>{row.getValue('no_telp')}</div>
+			accessorKey: 'phone_number',
+			header: 'phone_number Number',
+			cell: ({ row }) => <div>{row.getValue('phone_number')}</div>
 		},
 		{
 			accessorKey: 'email',
@@ -191,7 +191,7 @@ export default function OrdersPage() {
 			header: 'Actions',
 			cell: ({ row }) => {
 				const status = row.getValue('status') as string;
-				const pesananId = row.original.id;
+				const orderId = row.original.id;
 
 				if (status === 'request') {
 					return (
@@ -200,16 +200,17 @@ export default function OrdersPage() {
 								size="sm"
 								variant="default"
 								className="bg-green-600 hover:bg-green-700 cursor-pointer"
-								onClick={() => handleStatusUpdate(pesananId, status, 'approved')}
+								onClick={() => handleStatusUpdate(orderId, status, 'approved')}
 							>
 								<Check className="w-4 h-4 mr-1" />
 								Approve
 							</Button>
+							{/* Uncomment if you want reject button */}
 							{/* <Button
 								size="sm"
 								variant="destructive"
 								className="cursor-pointer"
-								onClick={() => handleStatusUpdate(pesananId, status, 'rejected')}
+								onClick={() => handleStatusUpdate(orderId, status, 'rejected')}
 							>
 								<X className="w-4 h-4 mr-1" />
 								Reject
@@ -228,14 +229,14 @@ export default function OrdersPage() {
 	];
 
 	useEffect(() => {
-		fetchPesanan();
+		fetchOrders();
 	}, []);
 
-	const fetchPesanan = async (): Promise<void> => {
+	const fetchOrders = async (): Promise<void> => {
 		try {
-			const response = await fetch('/api/pesanan');
+			const response = await fetch('/api/orders');
 			const result = await response.json();
-			setPesanan(result.data || []);
+			setOrders(result.data || []);
 		} catch (error) {
 			console.error('Error fetching orders:', error);
 		} finally {
@@ -245,7 +246,7 @@ export default function OrdersPage() {
 
 	if (loading) {
 		return (
-			<div className="">
+			<div>
 				<div className="flex justify-between items-center mb-6">
 					<div className="h-9 w-48 bg-gray-200 rounded animate-pulse"></div>
 				</div>
@@ -259,16 +260,16 @@ export default function OrdersPage() {
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-2">
-				<h1 className="text-3xl font-bold">Order Data</h1>
+				<h1 className="text-3xl font-bold">Orders</h1>
 			</div>
 
 			<DataTable
 				columns={columns}
-				data={pesanan}
+				data={orders}
 				showColumnToggle={false}
-				searchKey="nama_pemesan"
+				searchKey="customer_name"
 				searchPlaceholder="Search by customer name..."
-				emptyMessage="No orders yet."
+				emptyMessage="No orders found."
 			/>
 
 			<AlertDialog
@@ -289,14 +290,14 @@ export default function OrdersPage() {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={confirmStatusUpdate}
-							className={
+							className={`cursor-pointer ${
 								statusDialog.newStatus === 'approved'
 									? 'bg-green-600 hover:bg-green-700'
 									: 'bg-red-600 hover:bg-red-700'
-							}
+							}`}
 						>
 							{statusDialog.newStatus === 'approved' ? 'Approve' : 'Reject'}
 						</AlertDialogAction>
