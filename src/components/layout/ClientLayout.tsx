@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Navbar } from '@/components/layout/navbar';
 import { SideNavbar } from '@/components/layout/sideNavbar';
 import Link from 'next/link';
+import { Footer } from './footer';
 
 const footerItems = [
 	{ title: 'Instagram', href: '/' },
@@ -36,7 +37,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 		<>
 			<Navbar />
 			<main className="max-w-[1720px] mx-auto my-6">{children}</main>
-			<footer>
+			<Footer />
+			{/* <footer>
 				<div className="max-w-[1720px] mx-auto px-4 py-12 border-t-2 border-dashed flex justify-between items-center">
 					<Link
 						href="/"
@@ -57,7 +59,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 						))}
 					</div>
 				</div>
-			</footer>
+			</footer> */}
 		</>
 	);
 }
