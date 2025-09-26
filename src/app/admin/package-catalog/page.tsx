@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-
 import { Plus, Edit, Trash2, CheckCircle, X } from 'lucide-react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -48,7 +47,7 @@ interface SuccessDialogState {
 	message: string;
 }
 
-export default function KatalogPaketWeddingPage() {
+export default function PackageCatalogPage() {
 	const [paketWedding, setPaketWedding] = useState<PaketWedding[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -402,6 +401,7 @@ export default function KatalogPaketWeddingPage() {
 			<DataTable
 				columns={columns}
 				data={paketWedding}
+				showColumnToggle={false}
 				searchKey="nama_paket"
 				searchPlaceholder="Search for a package..."
 				emptyMessage="No wedding packages found."

@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Loader2, AlertCircle } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
@@ -24,76 +28,93 @@ export default function LoginPage() {
 			});
 
 			if (result?.error) {
-				setError('Email atau password salah');
+				setError('Invalid email or password.');
 			} else {
-				// Refresh session dan redirect
 				await getSession();
 				router.push('/admin/profil-website');
 			}
 		} catch (err) {
-			setError('Terjadi kesalahan saat login');
+			setError('An error occurred during login.');
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-50">
-			<div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-				<div>
-					<h2 className="mt-6 text-center text-3xl font-bold text-gray-900">Admin Login</h2>
+		<div className="grid min-h-screen w-full lg:grid-cols-2">
+			{/* Kolom Kiri: Gambar */}
+			<div
+				className="hidden bg-cover bg-center lg:block"
+				// Ganti dengan path gambar yang Anda inginkan
+				style={{ backgroundImage: "url('/images/beranda-1.jpg')" }}
+			></div>
+
+			{/* Kolom Kanan: Form Login */}
+			<div className="flex items-center justify-center bg-white p-8">
+				<div className="w-full max-w-sm space-y-8">
+					<div className="text-center">
+						<h1 className="font-black text-5xl mb-4">W.</h1>
+						<h2 className="text-3xl font-bold tracking-tight text-gray-900">Welcome Back</h2>
+						<p className="mt-2 text-gray-600">Please enter your credentials to access the admin panel.</p>
+					</div>
+
+					<form
+						className="space-y-6"
+						onSubmit={handleSubmit}
+					>
+						{error && (
+							<div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+								<AlertCircle className="h-4 w-4 flex-shrink-0" />
+								<span>{error}</span>
+							</div>
+						)}
+						<div className="space-y-2">
+							<Label
+								htmlFor="email"
+								className="text-sm font-medium text-gray-700"
+							>
+								Email
+							</Label>
+							<Input
+								id="email"
+								name="email"
+								type="email"
+								required
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								placeholder="you@example.com"
+								className="h-12"
+							/>
+						</div>
+						<div className="space-y-2">
+							<Label
+								htmlFor="password"
+								className="text-sm font-medium text-gray-700"
+							>
+								Password
+							</Label>
+							<Input
+								id="password"
+								name="password"
+								type="password"
+								required
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								placeholder="••••••••"
+								className="h-12"
+							/>
+						</div>
+						<div>
+							<Button
+								type="submit"
+								disabled={loading}
+								className="w-full h-12 bg-black text-white hover:bg-gray-800 focus-visible:ring-black cursor-pointer"
+							>
+								{loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Login'}
+							</Button>
+						</div>
+					</form>
 				</div>
-				<form
-					className="mt-8 space-y-6"
-					onSubmit={handleSubmit}
-				>
-					{error && (
-						<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">{error}</div>
-					)}
-					<div>
-						<label
-							htmlFor="email"
-							className="block text-sm font-medium text-gray-700"
-						>
-							Email
-						</label>
-						<input
-							id="email"
-							name="email"
-							type="email"
-							required
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-						/>
-					</div>
-					<div>
-						<label
-							htmlFor="password"
-							className="block text-sm font-medium text-gray-700"
-						>
-							Password
-						</label>
-						<input
-							id="password"
-							name="password"
-							type="password"
-							required
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-						/>
-					</div>
-					<div>
-						<button
-							type="submit"
-							disabled={loading}
-							className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-						>
-							{loading ? 'Loading...' : 'Login'}
-						</button>
-					</div>
-				</form>
 			</div>
 		</div>
 	);

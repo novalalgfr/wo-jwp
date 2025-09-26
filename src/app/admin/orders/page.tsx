@@ -42,7 +42,7 @@ interface SuccessDialog {
 	actionType: 'approved' | 'rejected';
 }
 
-export default function DataPesananPage() {
+export default function OrdersPage() {
 	const [pesanan, setPesanan] = useState<Pesanan[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [statusDialog, setStatusDialog] = useState<StatusUpdateDialog>({
@@ -67,7 +67,7 @@ export default function DataPesananPage() {
 						className="bg-yellow-100 text-yellow-800 border-yellow-200"
 					>
 						<Clock className="w-3 h-3 mr-1" />
-						Pending
+						Request
 					</Badge>
 				);
 			case 'approved':
@@ -258,13 +258,14 @@ export default function DataPesananPage() {
 
 	return (
 		<div>
-			<div className="flex justify-between items-center mb-6">
+			<div className="flex justify-between items-center mb-2">
 				<h1 className="text-3xl font-bold">Order Data</h1>
 			</div>
 
 			<DataTable
 				columns={columns}
 				data={pesanan}
+				showColumnToggle={false}
 				searchKey="nama_pemesan"
 				searchPlaceholder="Search by customer name..."
 				emptyMessage="No orders yet."

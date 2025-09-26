@@ -41,14 +41,14 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	searchPlaceholder = 'Cari...',
+	searchPlaceholder = 'Search...',
 	searchKey,
 	showSearch = true,
 	showColumnToggle = true,
 	showPagination = true,
 	pageSize = 10,
 	className = '',
-	emptyMessage = 'Tidak ada data ditemukan.'
+	emptyMessage = 'No data found.'
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -99,14 +99,14 @@ export function DataTable<TData, TValue>({
 					</div>
 
 					{/* Column Toggle */}
-					{/* {showColumnToggle && (
+					{showColumnToggle && (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<Button
 									variant="outline"
 									className="ml-auto"
 								>
-									Kolom <ChevronDown className="ml-2 h-4 w-4" />
+									Columns <ChevronDown className="ml-2 h-4 w-4" />
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
 									})}
 							</DropdownMenuContent>
 						</DropdownMenu>
-					)} */}
+					)}
 				</div>
 			)}
 
@@ -189,17 +189,16 @@ export function DataTable<TData, TValue>({
 					<div className="flex-1 text-sm text-muted-foreground">
 						{table.getFilteredRowModel().rows.length > 0 ? (
 							<>
-								Menampilkan{' '}
-								{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}{' '}
-								hingga{' '}
+								Showing{' '}
+								{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{' '}
 								{Math.min(
 									(table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
 									table.getFilteredRowModel().rows.length
 								)}{' '}
-								dari {table.getFilteredRowModel().rows.length} hasil
+								of {table.getFilteredRowModel().rows.length} results
 							</>
 						) : (
-							'Tidak ada data'
+							'No data'
 						)}
 					</div>
 					<div className="space-x-2">
@@ -210,7 +209,7 @@ export function DataTable<TData, TValue>({
 							disabled={!table.getCanPreviousPage()}
 							className="cursor-pointer"
 						>
-							Sebelumnya
+							Previous
 						</Button>
 						<Button
 							variant="outline"
@@ -219,7 +218,7 @@ export function DataTable<TData, TValue>({
 							disabled={!table.getCanNextPage()}
 							className="cursor-pointer"
 						>
-							Selanjutnya
+							Next
 						</Button>
 					</div>
 				</div>
@@ -228,7 +227,7 @@ export function DataTable<TData, TValue>({
 	);
 }
 
-// Helper function untuk membuat sortable column header
+// Helper function to create a sortable column header
 export function createSortableHeader<TData>(title: string) {
 	const SortableHeader = ({ column }: { column: Column<TData, unknown> }) => {
 		return (
@@ -247,7 +246,7 @@ export function createSortableHeader<TData>(title: string) {
 	return SortableHeader;
 }
 
-// Helper function untuk membuat action column
+// Helper function to create an action column
 export function createActionColumn<TData>(actions: (row: TData) => React.ReactNode) {
 	return {
 		id: 'actions',
@@ -260,7 +259,7 @@ export function createActionColumn<TData>(actions: (row: TData) => React.ReactNo
 							variant="ghost"
 							className="h-8 w-8 p-0"
 						>
-							<span className="sr-only">Buka menu</span>
+							<span className="sr-only">Open menu</span>
 							<MoreHorizontal className="h-4 w-4" />
 						</Button>
 					</DropdownMenuTrigger>
