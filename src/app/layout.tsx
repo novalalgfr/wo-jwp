@@ -4,8 +4,8 @@ import Providers from '@/components/providers/SessionProvider';
 import ClientLayout from '@/components/layout/ClientLayout';
 
 export const metadata: Metadata = {
-	title: 'Portfolio',
-	description: 'A personal portfolio website built with Next.js and Tailwind CSS.'
+	title: 'Wedding Organizer',
+	description: 'A wedding organizer website built with Next.js and Tailwind CSS.'
 };
 
 export default function RootLayout({

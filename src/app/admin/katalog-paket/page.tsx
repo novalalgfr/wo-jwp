@@ -59,31 +59,9 @@ export default function KatalogPaketWeddingPage() {
 
 	const columns: ColumnDef<PaketWedding>[] = [
 		{
-			accessorKey: 'id',
-			header: createSortableHeader<PaketWedding>('ID'),
-			cell: ({ row }) => <div className="font-medium">{row.getValue('id')}</div>
-		},
-		{
-			accessorKey: 'gambar_paket',
-			header: 'Gambar',
-			cell: ({ row }) => {
-				const gambar = row.getValue('gambar_paket') as string | null;
-				return gambar ? (
-					<div className="relative w-16 h-16">
-						<Image
-							src={gambar}
-							alt={row.getValue('nama_paket') as string}
-							fill
-							className="object-cover rounded"
-							sizes="64px"
-						/>
-					</div>
-				) : (
-					<div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
-						No Image
-					</div>
-				);
-			}
+			id: 'no',
+			header: 'No',
+			cell: ({ row }) => <div className="font-medium">{row.index + 1}</div>
 		},
 		{
 			accessorKey: 'nama_paket',
@@ -122,15 +100,40 @@ export default function KatalogPaketWeddingPage() {
 				);
 			}
 		},
+		{
+			accessorKey: 'gambar_paket',
+			header: 'Gambar',
+			cell: ({ row }) => {
+				const gambar = row.getValue('gambar_paket') as string | null;
+				return gambar ? (
+					<div className="relative w-16 h-16">
+						<Image
+							src={gambar}
+							alt={row.getValue('nama_paket') as string}
+							fill
+							className="object-cover rounded"
+							sizes="64px"
+						/>
+					</div>
+				) : (
+					<div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+						No Image
+					</div>
+				);
+			}
+		},
 		createActionColumn<PaketWedding>((row: PaketWedding) => (
 			<>
-				<DropdownMenuItem onClick={() => handleEdit(row)}>
+				<DropdownMenuItem
+					onClick={() => handleEdit(row)}
+					className="cursor-pointer"
+				>
 					<Edit className="mr-2 h-4 w-4" />
 					Edit
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					onClick={() => setDeleteDialog({ open: true, id: row.id })}
-					className="text-red-600"
+					className="text-red-600 hover:!text-red-600 cursor-pointer"
 				>
 					<Trash2 className="mr-2 h-4 w-4" />
 					Hapus
@@ -246,7 +249,17 @@ export default function KatalogPaketWeddingPage() {
 	};
 
 	if (loading) {
-		return <div className="p-6">Loading...</div>;
+		return (
+			<div className="container mx-auto p-6">
+				<div className="flex justify-between items-center mb-6">
+					<div className="h-9 w-48 bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-10 w-32 bg-gray-200 rounded animate-pulse"></div>
+				</div>
+				<div className="space-y-4">
+					<div className="h-96 bg-gray-200 rounded animate-pulse"></div>
+				</div>
+			</div>
+		);
 	}
 
 	return (
@@ -258,13 +271,13 @@ export default function KatalogPaketWeddingPage() {
 					onOpenChange={handleDialogOpenChange}
 				>
 					<DialogTrigger asChild>
-						<Button className="flex items-center gap-2">
+						<Button className="flex items-center gap-2 cursor-pointer">
 							<Plus className="h-4 w-4" />
 							Tambah Paket
 						</Button>
 					</DialogTrigger>
 					<DialogContent className="max-w-2xl">
-						<DialogHeader>
+						<DialogHeader className="mb-6">
 							<DialogTitle>{editMode ? 'Edit Paket Wedding' : 'Tambah Paket Wedding'}</DialogTitle>
 						</DialogHeader>
 
@@ -316,10 +329,16 @@ export default function KatalogPaketWeddingPage() {
 									type="button"
 									variant="outline"
 									onClick={() => setDialogOpen(false)}
+									className="cursor-pointer"
 								>
 									Batal
 								</Button>
-								<Button type="submit">{editMode ? 'Update' : 'Simpan'}</Button>
+								<Button
+									type="submit"
+									className="cursor-pointer"
+								>
+									{editMode ? 'Update' : 'Simpan'}
+								</Button>
 							</div>
 						</form>
 					</DialogContent>
