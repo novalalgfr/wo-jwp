@@ -1,21 +1,18 @@
 'use client';
 
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import { Menu } from 'lucide-react';
 import { Navbar } from '@/components/layout/navbar';
 import { SideNavbar } from '@/components/layout/sideNavbar';
-import Link from 'next/link';
 import { Footer } from './footer';
-
-const footerItems = [
-	{ title: 'Instagram', href: '/' },
-	{ title: 'Tiktok', href: '/' },
-	{ title: 'LinkedIn', href: '/' }
-];
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
 	const { data: session } = useSession();
 	const pathname = usePathname();
+
+	const [isSidebarOpen, setSidebarOpen] = useState(false);
 
 	if (pathname === '/login') {
 		return <>{children}</>;
@@ -26,9 +23,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 	if (isAdminRoute && isAdmin) {
 		return (
-			<div className="flex min-h-screen">
-				<SideNavbar />
-				<main className="flex-1 p-6 bg-gray-50">{children}</main>
+			<div className="flex min-h-screen bg-gray-50">
+				<SideNavbar
+					isOpen={isSidebarOpen}
+					setIsOpen={setSidebarOpen}
+				/>
+				<main className="flex-1 lg:ml-72">
+					<div className="p-4 border-b border-gray-200 lg:hidden">
+						<button
+							onClick={() => setSidebarOpen(true)}
+							className="p-2 rounded-md text-gray-700 hover:bg-gray-200"
+							aria-label="Open sidebar"
+						>
+							<Menu size={24} />
+						</button>
+					</div>
+					<div className="p-6">{children}</div>
+				</main>
 			</div>
 		);
 	}
