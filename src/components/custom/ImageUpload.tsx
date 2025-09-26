@@ -1,5 +1,5 @@
 import { Label } from '@/components/ui/label';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
@@ -8,12 +8,13 @@ interface ImageUploadProps {
 	label: string;
 	id: string;
 	value?: File | null;
+	existingImageUrl?: string | null; // Tambahkan prop untuk URL gambar existing
 	onChange?: (file: File | null) => void;
 	className?: string;
 	disabled?: boolean;
 	required?: boolean;
 	accept?: string;
-	maxSize?: number; // dalam MB
+	maxSize?: number;
 	previewWidth?: string;
 	previewHeight?: string;
 	name?: string;
@@ -23,12 +24,13 @@ const ImageUpload = ({
 	label,
 	id,
 	value,
+	existingImageUrl,
 	onChange,
 	className = '',
 	disabled = false,
 	required = false,
 	accept = 'image/*',
-	maxSize = 5, // 5MB default
+	maxSize = 5,
 	previewWidth = 'w-full',
 	previewHeight = 'h-48',
 	...props
@@ -36,7 +38,15 @@ const ImageUpload = ({
 	const [preview, setPreview] = useState<string | null>(null);
 	const [dragActive, setDragActive] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [hasNewFile, setHasNewFile] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
+	// Set preview dari existing image URL saat component mount
+	useEffect(() => {
+		if (existingImageUrl && !hasNewFile) {
+			setPreview(existingImageUrl);
+		}
+	}, [existingImageUrl, hasNewFile]);
 
 	const validateFile = (file: File): string | null => {
 		if (maxSize && file.size > maxSize * 1024 * 1024) {
@@ -56,6 +66,7 @@ const ImageUpload = ({
 		}
 
 		setError(null);
+		setHasNewFile(true);
 
 		// Create preview
 		const reader = new FileReader();
@@ -101,6 +112,7 @@ const ImageUpload = ({
 	const handleRemove = () => {
 		setPreview(null);
 		setError(null);
+		setHasNewFile(false);
 		onChange?.(null);
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
@@ -113,13 +125,16 @@ const ImageUpload = ({
 		}
 	};
 
+	// Determine if we should show preview
+	const shouldShowPreview = preview && (hasNewFile || existingImageUrl);
+
 	return (
 		<div className={`grid w-full gap-3 ${className}`}>
 			<Label htmlFor={id}>
 				{label} {required && <span className="text-red-500">*</span>}
 			</Label>
 
-			{/* Hidden Input File - digunakan untuk semua kondisi */}
+			{/* Hidden Input File */}
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -133,7 +148,7 @@ const ImageUpload = ({
 			/>
 
 			{/* Upload Area */}
-			{!preview ? (
+			{!shouldShowPreview ? (
 				<div
 					className={`
 						border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
@@ -171,7 +186,7 @@ const ImageUpload = ({
 							<Button
 								type="button"
 								onClick={handleRemove}
-								className="absolute p-5 top-2 right-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors cursor-pointer"
+								className="absolute p-1 top-2 right-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors cursor-pointer"
 							>
 								<X
 									className="h-4 w-4"
@@ -181,12 +196,18 @@ const ImageUpload = ({
 						)}
 					</div>
 
+					{/* Status indicator */}
+					{existingImageUrl && !hasNewFile && <p className="text-xs text-gray-500 mt-1">Current image</p>}
+					{hasNewFile && <p className="text-xs text-green-600 mt-1">New image selected</p>}
+
 					{/* Change Image Button */}
 					{!disabled && (
 						<Button
 							type="button"
 							onClick={handleClick}
-							className="mt-2 px-3 py-1 text-sm transition-colors flex items-center gap-2 cursor-pointer"
+							variant="outline"
+							size="sm"
+							className="mt-2 text-sm transition-colors flex items-center gap-2 cursor-pointer"
 						>
 							<ImageIcon className="h-4 w-4" />
 							Ganti Gambar

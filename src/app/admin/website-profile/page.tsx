@@ -43,6 +43,20 @@ export interface WebsiteProfileData {
 	bottom_description: string;
 }
 
+// Interface untuk menyimpan URL gambar existing
+interface ExistingImages {
+	hero_image_1?: string;
+	hero_image_2?: string;
+	gallery_image_1?: string;
+	gallery_image_2?: string;
+	gallery_image_3?: string;
+	gallery_image_4?: string;
+	gallery_image_5?: string;
+	gallery_image_6?: string;
+	gallery_image_7?: string;
+	gallery_image_8?: string;
+}
+
 export default function WebsiteProfilePage() {
 	const [formData, setFormData] = useState<WebsiteProfileData>({
 		hero_badge_text: '',
@@ -80,6 +94,8 @@ export default function WebsiteProfilePage() {
 		bottom_description: ''
 	});
 
+	const [existingImages, setExistingImages] = useState<ExistingImages>({});
+	console.log('🚀 ~ WebsiteProfilePage ~ existingImages:', existingImages);
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 	const [isEdit, setIsEdit] = useState(false);
@@ -96,10 +112,25 @@ export default function WebsiteProfilePage() {
 				const result = await response.json();
 				if (result.data) {
 					setIsEdit(true);
-					// Map data dari API ke form data
+
+					// Set form data (tanpa file fields)
+					const {
+						hero_image_1_url,
+						hero_image_2_url,
+						gallery_image_1_url,
+						gallery_image_2_url,
+						gallery_image_3_url,
+						gallery_image_4_url,
+						gallery_image_5_url,
+						gallery_image_6_url,
+						gallery_image_7_url,
+						gallery_image_8_url,
+						...textData
+					} = result.data;
+
 					setFormData((prev) => ({
 						...prev,
-						...result.data,
+						...textData,
 						// Reset file fields karena tidak bisa load dari API
 						hero_image_1: null,
 						hero_image_2: null,
@@ -109,8 +140,23 @@ export default function WebsiteProfilePage() {
 						gallery_image_4: null,
 						gallery_image_5: null,
 						gallery_image_6: null,
-						gallery_image_7: null
+						gallery_image_7: null,
+						gallery_image_8: null
 					}));
+
+					// Set existing images URLs
+					setExistingImages({
+						hero_image_1: hero_image_1_url,
+						hero_image_2: hero_image_2_url,
+						gallery_image_1: gallery_image_1_url,
+						gallery_image_2: gallery_image_2_url,
+						gallery_image_3: gallery_image_3_url,
+						gallery_image_4: gallery_image_4_url,
+						gallery_image_5: gallery_image_5_url,
+						gallery_image_6: gallery_image_6_url,
+						gallery_image_7: gallery_image_7_url,
+						gallery_image_8: gallery_image_8_url
+					});
 				}
 			}
 		} catch (error) {
@@ -168,6 +214,8 @@ export default function WebsiteProfilePage() {
 				if (!isEdit) {
 					setIsEdit(true);
 				}
+				// Reload data untuk update existing images URLs
+				await loadExistingData();
 			} else {
 				setMessage({
 					type: 'error',
@@ -282,15 +330,17 @@ export default function WebsiteProfilePage() {
 								label="Hero Image 1"
 								id="hero_image_1"
 								value={formData.hero_image_1}
+								existingImageUrl={existingImages.hero_image_1}
 								onChange={handleImageChange('hero_image_1')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Hero Image 2"
 								id="hero_image_2"
 								value={formData.hero_image_2}
+								existingImageUrl={existingImages.hero_image_2}
 								onChange={handleImageChange('hero_image_2')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 						</div>
 					</CardContent>
@@ -479,57 +529,65 @@ export default function WebsiteProfilePage() {
 								label="Gallery Image 1"
 								id="gallery_image_1"
 								value={formData.gallery_image_1}
+								existingImageUrl={existingImages.gallery_image_1}
 								onChange={handleImageChange('gallery_image_1')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 2"
 								id="gallery_image_2"
 								value={formData.gallery_image_2}
+								existingImageUrl={existingImages.gallery_image_2}
 								onChange={handleImageChange('gallery_image_2')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 3"
 								id="gallery_image_3"
 								value={formData.gallery_image_3}
+								existingImageUrl={existingImages.gallery_image_3}
 								onChange={handleImageChange('gallery_image_3')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 4"
 								id="gallery_image_4"
 								value={formData.gallery_image_4}
+								existingImageUrl={existingImages.gallery_image_4}
 								onChange={handleImageChange('gallery_image_4')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 5"
 								id="gallery_image_5"
 								value={formData.gallery_image_5}
+								existingImageUrl={existingImages.gallery_image_5}
 								onChange={handleImageChange('gallery_image_5')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 6"
 								id="gallery_image_6"
 								value={formData.gallery_image_6}
+								existingImageUrl={existingImages.gallery_image_6}
 								onChange={handleImageChange('gallery_image_6')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 7"
 								id="gallery_image_7"
 								value={formData.gallery_image_7}
+								existingImageUrl={existingImages.gallery_image_7}
 								onChange={handleImageChange('gallery_image_7')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 							<ImageUpload
 								label="Gallery Image 8"
 								id="gallery_image_8"
 								value={formData.gallery_image_8}
+								existingImageUrl={existingImages.gallery_image_8}
 								onChange={handleImageChange('gallery_image_8')}
-								previewHeight="h-32"
+								previewHeight="h-52"
 							/>
 						</div>
 					</CardContent>

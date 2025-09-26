@@ -27,6 +27,7 @@ interface WeddingPackage {
 	package_description: string;
 	package_price: number;
 	package_image: string | null;
+	package_image_url: string | null; // Tambahan untuk URL lengkap
 }
 
 interface FormData {
@@ -59,6 +60,7 @@ export default function PackageCatalogPage() {
 	});
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [currentId, setCurrentId] = useState<number | null>(null);
+	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null); // Tambahan untuk existing image URL
 
 	const [formData, setFormData] = useState<FormData>({
 		package_name: '',
@@ -111,15 +113,16 @@ export default function PackageCatalogPage() {
 			}
 		},
 		{
-			accessorKey: 'package_image',
+			accessorKey: 'package_image_url', // Menggunakan URL lengkap
 			header: 'Image',
 			cell: ({ row }) => {
-				const image = row.getValue('package_image') as string | null;
-				return image ? (
+				const imageUrl = row.getValue('package_image_url') as string | null;
+				const packageName = row.getValue('package_name') as string;
+				return imageUrl ? (
 					<div className="relative w-16 h-16">
 						<Image
-							src={image}
-							alt={row.getValue('package_name') as string}
+							src={imageUrl}
+							alt={packageName}
 							fill
 							className="object-cover rounded"
 							sizes="64px"
@@ -177,6 +180,7 @@ export default function PackageCatalogPage() {
 		});
 		setEditMode(false);
 		setCurrentId(null);
+		setCurrentImageUrl(null); // Reset existing image URL
 	};
 
 	const showSuccessDialog = (type: 'create' | 'edit' | 'delete', message: string): void => {
@@ -230,6 +234,7 @@ export default function PackageCatalogPage() {
 			package_image: null
 		});
 		setCurrentId(row.id);
+		setCurrentImageUrl(row.package_image_url); // Set existing image URL
 		setEditMode(true);
 		setDialogOpen(true);
 	};
@@ -375,6 +380,7 @@ export default function PackageCatalogPage() {
 								id="gambar_paket"
 								label="Package Image"
 								value={formData.package_image}
+								existingImageUrl={currentImageUrl} // Pass existing image URL
 								onChange={(file) => setFormData((prev) => ({ ...prev, package_image: file }))}
 								maxSize={5}
 							/>

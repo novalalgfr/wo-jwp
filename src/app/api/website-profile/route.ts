@@ -67,8 +67,34 @@ interface WebsiteProfile extends RowDataPacket {
 	updated_at: Date;
 }
 
+// Helper function to add full URL to image paths
+function addImageUrls(data: WebsiteProfile, baseUrl: string) {
+	const imageFields = [
+		'hero_image_1',
+		'hero_image_2',
+		'gallery_image_1',
+		'gallery_image_2',
+		'gallery_image_3',
+		'gallery_image_4',
+		'gallery_image_5',
+		'gallery_image_6',
+		'gallery_image_7',
+		'gallery_image_8'
+	];
+
+	const result = { ...data };
+
+	imageFields.forEach((field) => {
+		const imagePath = data[field];
+		// Add URL version of the image path
+		result[`${field}_url`] = imagePath && imagePath !== '' ? `${baseUrl}${imagePath}` : null;
+	});
+
+	return result;
+}
+
 // GET - Fetch website profile
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
 		console.log('Fetching website profile data...');
 
@@ -89,7 +115,13 @@ export async function GET() {
 			);
 		}
 
-		return NextResponse.json({ data: rows[0] }, { status: 200 });
+		// Add full URLs for images
+		const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+		const dataWithUrls = addImageUrls(rows[0], baseUrl);
+
+		console.log('Data with URLs:', dataWithUrls);
+
+		return NextResponse.json({ data: dataWithUrls }, { status: 200 });
 	} catch (error) {
 		console.error('Error fetching website profile:', error);
 		return NextResponse.json({ message: 'Database connection failed' }, { status: 500 });
@@ -211,7 +243,7 @@ export async function POST(request: NextRequest) {
 				process_step_1, process_step_2, process_step_3, process_step_4, process_step_5, process_description,
 				gallery_image_1, gallery_image_2, gallery_image_3, gallery_image_4, gallery_image_5, gallery_image_6, gallery_image_7, gallery_image_8,
 				aesthetic_text, gallery_cta_text, bottom_title, bottom_description
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			[
 				profileData.hero_badge_text,
 				profileData.hero_title,
@@ -385,9 +417,9 @@ export async function PUT(request: NextRequest) {
 					satisfied_couples_count, portfolio_projects_count,
 					service_1_title, service_2_title, service_3_title,
 					process_step_1, process_step_2, process_step_3, process_step_4, process_step_5, process_description,
-					gallery_image_1, gallery_image_2, gallery_image_3, gallery_image_4, gallery_image_5, gallery_image_6, gallery_image_7,
+					gallery_image_1, gallery_image_2, gallery_image_3, gallery_image_4, gallery_image_5, gallery_image_6, gallery_image_7, gallery_image_8,
 					aesthetic_text, gallery_cta_text, bottom_title, bottom_description
-				) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 				[
 					profileData.hero_badge_text,
 					profileData.hero_title,

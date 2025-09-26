@@ -18,14 +18,26 @@ interface WeddingPackage extends RowDataPacket {
 	package_image: string | null;
 }
 
+// Helper function to add full URL to image path
+function addImageUrl(data: WeddingPackage[], baseUrl: string) {
+	return data.map((item) => ({
+		...item,
+		package_image_url: item.package_image && item.package_image !== '' ? `${baseUrl}${item.package_image}` : null
+	}));
+}
+
 // GET - Fetch all wedding packages
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
 		console.log('Getting wedding package data...');
 		const [rows] = await db.execute<WeddingPackage[]>('SELECT * FROM wedding_packages ORDER BY id DESC');
 		console.log('Data fetched successfully:', rows.length, 'rows');
 
-		return NextResponse.json({ data: rows }, { status: 200 });
+		// Add full URLs for images
+		const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+		const dataWithUrls = addImageUrl(rows, baseUrl);
+
+		return NextResponse.json({ data: dataWithUrls }, { status: 200 });
 	} catch (error) {
 		console.error('Error fetching wedding packages:', error);
 		return NextResponse.json({ message: 'Database connection failed' }, { status: 500 });
