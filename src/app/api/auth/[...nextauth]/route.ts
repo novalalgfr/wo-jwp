@@ -79,7 +79,7 @@ export const authOptions: AuthOptions = {
 		async redirect({ url, baseUrl }) {
 			// Redirect ke admin setelah login sukses
 			if (url === baseUrl + '/login') {
-				return baseUrl + '/admin/profil-website';
+				return baseUrl + '/admin/website-profile';
 			}
 			return url;
 		}

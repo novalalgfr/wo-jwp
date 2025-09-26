@@ -250,7 +250,7 @@ export default function OrdersPage() {
 				<div className="flex justify-between items-center mb-6">
 					<div className="h-9 w-48 bg-gray-200 rounded animate-pulse"></div>
 				</div>
-				<div className="space-y-4">
+				<div className="">
 					<div className="h-96 bg-gray-200 rounded animate-pulse"></div>
 				</div>
 			</div>

@@ -31,7 +31,7 @@ export default function LoginPage() {
 				setError('Invalid email or password.');
 			} else {
 				await getSession();
-				router.push('/admin/profil-website');
+				router.push('/admin/website-profile');
 			}
 		} catch (err) {
 			setError('An error occurred during login.');

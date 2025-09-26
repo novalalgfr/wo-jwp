@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
 const navItems = [
-	{ title: 'Website Profile', href: '/admin/profil-website', icon: House },
+	{ title: 'Website Profile', href: '/admin/website-profile', icon: House },
 	{ title: 'Package Catalog', href: '/admin/package-catalog', icon: NotepadText },
 	{ title: 'Orders', href: '/admin/orders', icon: ArrowLeftRight },
 	{ title: 'Settings', href: '/admin/pengaturan', icon: Settings }

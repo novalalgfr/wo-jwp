@@ -1,6 +1,5 @@
 'use client';
 
-// Ganti import Card dengan PaketCard yang baru
 import PaketCard from '@/components/custom/PaketCard';
 import FormPesanan from '@/components/custom/FormPesanan';
 import { Button } from '@/components/ui/button';

@@ -36,7 +36,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 	return (
 		<>
 			<Navbar />
-			<main className="max-w-[1720px] mx-auto my-6">{children}</main>
+			<main className="max-w-[1720px] mx-auto px-4 md:px-6 lg:px-8 my-6">{children}</main>
 			<Footer />
 		</>
 	);

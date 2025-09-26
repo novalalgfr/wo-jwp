@@ -2,38 +2,69 @@
 
 import { Button } from '@/components/ui/button';
 import { MoveUpRight } from 'lucide-react';
+import { WebsiteProfileData } from './admin/website-profile/page';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+	const [profileData, setProfileData] = useState<WebsiteProfileData | null>(null);
+	const [loading, setLoading] = useState(true);
+
+	const data = profileData;
+
+	useEffect(() => {
+		loadProfileData();
+	}, []);
+
+	const loadProfileData = async () => {
+		try {
+			const response = await fetch('/api/website-profile');
+			if (response.ok) {
+				const result = await response.json();
+				if (result.data) {
+					setProfileData(result.data);
+				}
+			}
+		} catch (error) {
+			console.error('Error loading profile data:', error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className="space-y-12">
+				<div className="grid grid-cols-3 gap-6">
+					<div className="h-[700px] bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-[700px] bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-[700px] bg-gray-200 rounded animate-pulse"></div>
+				</div>
+				<div className="grid grid-cols-2 gap-6">
+					<div className="h-[200px] bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-[200px] bg-gray-200 rounded animate-pulse"></div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<section className="space-y-12">
 			<div className="grid grid-cols-3 gap-6">
 				<div
 					className="h-[700px] rounded-4xl flex flex-col justify-between p-6 bg-cover bg-bottom"
-					style={{ backgroundImage: "url('/images/beranda-1.jpg')" }}
+					style={{ backgroundImage: `url('${data?.hero_image_1}')` }}
 				>
 					<p className="ml-auto text-base text-white border border-white rounded-full px-6 py-2">
-						a day to remember
+						{data?.hero_badge_text}
 					</p>
-					<p className="text-lg text-white">
-						Welcome to W. where your dream day becomes our passion, from intimate gatherings to grand
-						celebrations, our dedicated team of experienced planners ensure that every detail is
-						meticulously curated to perfection.
-					</p>
+					<p className="text-lg text-white">{data?.hero_description}</p>
 				</div>
 				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
-					<h1 className="text-5xl">
-						Made with
-						<br />
-						lots of love
-					</h1>
-					<p>
-						From finding your perfect wedding venue, to budgeting and concept creation, to being your
-						wedding day manager on your big day, we will take care of exactly whay you want us to do, so you
-						can relax and enjoy your wedding
-					</p>
+					<h1 className="text-5xl w-[60%]">{data?.hero_title}</h1>
+					<p>{data?.hero_subtitle}</p>
 					<div className="flex items-center shadow-sm rounded-full">
 						<Button className="bg-[#F6F4F0] text-base hover:bg-[#F6F4F0] text-black rounded-full p-6 pr-12 cursor-pointer">
-							Get in touch
+							{data?.hero_cta_text}
 						</Button>
 						<Button
 							size="icon"
@@ -48,76 +79,64 @@ export default function Home() {
 				</div>
 				<div
 					className="bg-gray-300 h-[700px] rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-2.jpg')" }}
+					style={{ backgroundImage: `url('${data?.hero_image_2}')` }}
 				></div>
 			</div>
 			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
 				<div className="bg-[#F6F4F0] shadow-sm rounded-full p-8 flex items-center gap-6">
 					<h4 className="text-xl text-nowrap font-semibold">What Our Couples Say:</h4>
 					<p className="text-base">
-						<span className="italic">
-							&apos;From the beautiful decor to the seamless coordination, W. exceeded our expectations in
-							every way. They made our dream wedding a reality.&apos;
-						</span>
-						<span className="font-semibold"> - John & Jane</span>
+						<span className="italic">&apos;{data?.testimonial_text}&apos;</span>
+						<span className="font-semibold"> - {data?.testimonial_author}</span>
 					</p>
 				</div>
 				<div>
-					<h6 className="text-xl">
-						Planning a celebration should be a joyous journey, not a stressful one. Let us take the reins,
-						so you can savor every moment leading up to your special day
-					</h6>
+					<h6 className="text-xl">{data?.about_description}</h6>
 				</div>
 			</div>
 			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
 				<div className="grid grid-cols-3 gap-6">
 					<div
 						className="bg-gray-300 w-full h-[276px] rounded-4xl bg-cover bg-center"
-						style={{ backgroundImage: "url('/images/beranda-3.jpg')" }}
+						style={{ backgroundImage: `url('${data?.gallery_image_1}')` }}
 					></div>
 					<div className="shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
 						<div className="flex-1 flex items-center">
-							<p className="text-lg">
-								With a keen eye for aesthetics, we turn your ideas into stunning realities
-							</p>
+							<p className="text-lg">{data?.aesthetic_text}</p>
 						</div>
 						<Button className="bg-white hover:bg-white text-black border border-1 rounded-full cursor-pointer">
-							View our gallery <MoveUpRight />
+							{data?.gallery_cta_text} <MoveUpRight />
 						</Button>
 					</div>
 					<div className="bg-[#F6F4F0] shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
 						<div className="flex-1 flex items-center">
-							<h6 className="text-4xl">120+</h6>
+							<h6 className="text-4xl">{data?.satisfied_couples_count}+</h6>
 						</div>
 						<p className="text-lg">Satisfied couples</p>
 					</div>
 				</div>
 				<div className="grid grid-cols-1 gap-6">
-					<div className="shadow-sm rounded-full p-6 text-lg">01. Full Service Wedding Planning</div>
-					<div className="shadow-sm rounded-full p-6 text-lg">02. A La Carte Wedding Planning</div>
-					<div className="shadow-sm rounded-full p-6 text-lg">03. Month-Of Wedding Management</div>
+					<div className="shadow-sm rounded-full p-6 text-lg">{data?.service_1_title}</div>
+					<div className="shadow-sm rounded-full p-6 text-lg">{data?.service_2_title}</div>
+					<div className="shadow-sm rounded-full p-6 text-lg">{data?.service_3_title}</div>
 				</div>
 			</div>
 			<div className="grid grid-cols-3 gap-6">
 				<div
 					className="bg-gray-900 rounded-4xl grid grid-cols-1 gap-6 p-10 bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-4.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_2}')` }}
 				>
-					<div className="bg-white/50 text-white rounded-full p-6 text-lg">01. Initial Consultation</div>
-					<div className="bg-white/50 text-white rounded-full p-6 text-lg">02. Planning and Design</div>
-					<div className="bg-white/50 text-white rounded-full p-6 text-lg">03. Vendor Coordination</div>
-					<div className="bg-white/50 text-white rounded-full p-6 text-lg">04. Final Preparations</div>
-					<div className="bg-white/50 text-white rounded-full p-6 text-lg">05. The Big Day</div>
-					<div className="text-base text-white mt-24">
-						From the grandest elements to the tiniest touches, we pride ourselves on our meticulous
-						attention to detail. Our goal is to create a seamless and memorable experience, leaving no stone
-						unturned.
-					</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">{data?.process_step_1}</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">{data?.process_step_2}</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">{data?.process_step_3}</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">{data?.process_step_4}</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">{data?.process_step_5}</div>
+					<div className="text-base text-white mt-24">{data?.process_description}</div>
 				</div>
 				<div className="grid grid-cols-1 gap-6">
 					<div
 						className="bg-gray-300 h-[350px] rounded-4xl bg-cover bg-center"
-						style={{ backgroundImage: "url('/images/beranda-5.jpg')" }}
+						style={{ backgroundImage: `url('${data?.gallery_image_3}')` }}
 					></div>
 					<div className="w-full h-[300px] bg-transparent rounded-4xl flex items-center justify-center">
 						<div className="flex -space-x-42">
@@ -133,7 +152,7 @@ export default function Home() {
 								</Button>
 							</div>
 							<div className="bg-[#F6F4F0] w-[350px] h-[350px] shadow-sm rounded-full flex flex-col items-center justify-center">
-								<h6 className="text-6xl mb-1">180+</h6>
+								<h6 className="text-6xl mb-1">{data?.portfolio_projects_count}+</h6>
 								<p className="text-lg">projects in portfolio</p>
 							</div>
 						</div>
@@ -141,36 +160,29 @@ export default function Home() {
 				</div>
 				<div
 					className="bg-gray-300 h-[748px] rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-6.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_4}')` }}
 				></div>
 			</div>
 			<div className="grid grid-cols-3 items-center">
-				<div className="text-5xl">
-					A moment of magic, <br /> a lifetime of love.
-				</div>
-				<div className="col-span-2 shadow-sm rounded-4xl p-6 text-lg">
-					We believe that your wedding should be a true reflection of your unique story. That&apos;s why we
-					speacialize in bringing your vision to life, no matter what style you envision for your big day.
-					From classic elegance to modern chic, rustic charm to glamor, we have the experience to make your
-					dream wedding a reality.
-				</div>
+				<div className="text-5xl w-[70%]">{data?.bottom_title}</div>
+				<div className="col-span-2 shadow-sm rounded-4xl p-6 text-lg">{data?.bottom_description}</div>
 			</div>
 			<div className="grid grid-cols-3 gap-6">
 				<div
 					className="row-span-2 bg-gray-300 h-full rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-7.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_5}')` }}
 				></div>
 				<div
 					className="bg-gray-300 h-[300px] rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-8.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_6}')` }}
 				></div>
 				<div
 					className="row-span-2 bg-gray-300 h-full rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-10.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_7}')` }}
 				></div>
 				<div
 					className="bg-gray-300 h-[300px] rounded-4xl bg-cover bg-center"
-					style={{ backgroundImage: "url('/images/beranda-9.jpg')" }}
+					style={{ backgroundImage: `url('${data?.gallery_image_8}')` }}
 				></div>
 			</div>
 		</section>
