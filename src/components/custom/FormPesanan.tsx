@@ -80,7 +80,7 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 		<>
 			<div className="mb-4">
 				<h4>
-					Paket yang dipilih:{' '}
+					Package Selected:{' '}
 					<span className="font-semibold">
 						{selectedPackage.nama_paket.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
 					</span>
@@ -94,8 +94,8 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 			>
 				<TextBox
 					id="nama_pemesan"
-					label="Nama Pemesan"
-					placeholder="Masukkan nama lengkap"
+					label="Full Name"
+					placeholder="Enter your full name"
 					validation="text"
 					value={formData.nama_pemesan}
 					onChange={(e) => setFormData((prev) => ({ ...prev, nama_pemesan: e.target.value }))}
@@ -104,8 +104,8 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 
 				<TextBox
 					id="no_telp"
-					label="Nomor Telepon"
-					placeholder="Masukkan nomor telepon"
+					label="Phone Number"
+					placeholder="Enter your phone number"
 					validation="number"
 					value={formData.no_telp}
 					onChange={(e) => setFormData((prev) => ({ ...prev, no_telp: e.target.value }))}
@@ -115,7 +115,7 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 				<TextBox
 					id="email"
 					label="Email"
-					placeholder="Masukkan email"
+					placeholder="Enter your email"
 					validation="text"
 					value={formData.email}
 					onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
@@ -130,14 +130,14 @@ const FormPesanan = ({ selectedPackage, onSuccess, onBack, formatCurrency }: For
 						className="cursor-pointer"
 						disabled={submitting}
 					>
-						Kembali
+						Back
 					</Button>
 					<Button
 						type="submit"
 						className="cursor-pointer"
 						disabled={submitting}
 					>
-						{submitting ? 'Memproses...' : 'Kirim Pesanan'}
+						{submitting ? 'Processing...' : 'Submit Order'}
 					</Button>
 				</div>
 			</form>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, CheckCircle, X } from 'lucide-react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -42,11 +42,22 @@ interface DeleteDialogState {
 	id: number | null;
 }
 
+interface SuccessDialogState {
+	open: boolean;
+	type: 'create' | 'edit' | 'delete' | null;
+	message: string;
+}
+
 export default function KatalogPaketWeddingPage() {
 	const [paketWedding, setPaketWedding] = useState<PaketWedding[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [deleteDialog, setDeleteDialog] = useState<DeleteDialogState>({ open: false, id: null });
+	const [successDialog, setSuccessDialog] = useState<SuccessDialogState>({
+		open: false,
+		type: null,
+		message: ''
+	});
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [currentId, setCurrentId] = useState<number | null>(null);
 
@@ -169,6 +180,10 @@ export default function KatalogPaketWeddingPage() {
 		setCurrentId(null);
 	};
 
+	const showSuccessDialog = (type: 'create' | 'edit' | 'delete', message: string): void => {
+		setSuccessDialog({ open: true, type, message });
+	};
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 
@@ -198,8 +213,9 @@ export default function KatalogPaketWeddingPage() {
 				await fetchPaketWedding();
 				setDialogOpen(false);
 				resetForm();
-				alert(result.message);
+				showSuccessDialog(editMode ? 'edit' : 'create', result.message);
 			} else {
+				// You could also create an error dialog here
 				alert(result.message || 'Terjadi kesalahan');
 			}
 		} catch (error) {
@@ -231,7 +247,7 @@ export default function KatalogPaketWeddingPage() {
 			if (response.ok) {
 				await fetchPaketWedding();
 				setDeleteDialog({ open: false, id: null });
-				alert(result.message);
+				showSuccessDialog('delete', result.message);
 			} else {
 				alert(result.message || 'Terjadi kesalahan');
 			}
@@ -245,6 +261,43 @@ export default function KatalogPaketWeddingPage() {
 		setDialogOpen(open);
 		if (!open) {
 			resetForm();
+		}
+	};
+
+	const getSuccessDialogContent = () => {
+		switch (successDialog.type) {
+			case 'create':
+				return {
+					title: 'Paket Berhasil Dibuat!',
+					subtitle: 'Berhasil!',
+					description: 'Paket wedding baru telah berhasil ditambahkan ke katalog.',
+					bgColor: 'bg-green-100',
+					iconColor: 'text-green-600'
+				};
+			case 'edit':
+				return {
+					title: 'Paket Berhasil Diupdate!',
+					subtitle: 'Berhasil!',
+					description: 'Perubahan paket wedding telah berhasil disimpan.',
+					bgColor: 'bg-blue-100',
+					iconColor: 'text-blue-600'
+				};
+			case 'delete':
+				return {
+					title: 'Paket Berhasil Dihapus!',
+					subtitle: 'Berhasil!',
+					description: 'Paket wedding telah berhasil dihapus dari katalog.',
+					bgColor: 'bg-red-100',
+					iconColor: 'text-red-600'
+				};
+			default:
+				return {
+					title: 'Operasi Berhasil!',
+					subtitle: 'Berhasil!',
+					description: 'Operasi telah berhasil dilakukan.',
+					bgColor: 'bg-green-100',
+					iconColor: 'text-green-600'
+				};
 		}
 	};
 
@@ -262,6 +315,8 @@ export default function KatalogPaketWeddingPage() {
 		);
 	}
 
+	const successContent = getSuccessDialogContent();
+
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-2">
@@ -276,7 +331,7 @@ export default function KatalogPaketWeddingPage() {
 							Tambah Paket
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="max-w-2xl">
+					<DialogContent className="max-w-2xl !rounded-4xl">
 						<DialogHeader className="mb-6">
 							<DialogTitle>{editMode ? 'Edit Paket Wedding' : 'Tambah Paket Wedding'}</DialogTitle>
 						</DialogHeader>
@@ -329,13 +384,13 @@ export default function KatalogPaketWeddingPage() {
 									type="button"
 									variant="outline"
 									onClick={() => setDialogOpen(false)}
-									className="cursor-pointer"
+									className="cursor-pointer rounded-full"
 								>
 									Batal
 								</Button>
 								<Button
 									type="submit"
-									className="cursor-pointer"
+									className="cursor-pointer rounded-full"
 								>
 									{editMode ? 'Update' : 'Simpan'}
 								</Button>
@@ -353,11 +408,12 @@ export default function KatalogPaketWeddingPage() {
 				emptyMessage="Belum ada paket wedding."
 			/>
 
+			{/* Delete Confirmation Dialog */}
 			<AlertDialog
 				open={deleteDialog.open}
 				onOpenChange={(open) => setDeleteDialog({ open, id: null })}
 			>
-				<AlertDialogContent>
+				<AlertDialogContent className="!rounded-4xl">
 					<AlertDialogHeader>
 						<AlertDialogTitle>Konfirmasi Hapus</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -365,16 +421,49 @@ export default function KatalogPaketWeddingPage() {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Batal</AlertDialogCancel>
+						<AlertDialogCancel className="rounded-full">Batal</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleDelete}
-							className="bg-red-600 hover:bg-red-700"
+							className="bg-red-600 hover:bg-red-700 rounded-full"
 						>
 							Hapus
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+
+			{/* Success Dialog */}
+			<Dialog
+				open={successDialog.open}
+				onOpenChange={(open) => setSuccessDialog({ open, type: null, message: '' })}
+			>
+				<DialogContent className="max-w-md !rounded-4xl">
+					<DialogHeader>
+						<DialogTitle className="text-center text-2xl pt-4">{successContent.title}</DialogTitle>
+					</DialogHeader>
+					<div className="text-center space-y-4 p-6">
+						<div
+							className={`mx-auto w-20 h-20 ${successContent.bgColor} rounded-full flex items-center justify-center`}
+						>
+							{successDialog.type === 'delete' ? (
+								<X className={`h-10 w-10 ${successContent.iconColor}`} />
+							) : (
+								<CheckCircle className={`h-10 w-10 ${successContent.iconColor}`} />
+							)}
+						</div>
+						<div>
+							<h3 className="text-xl font-semibold mb-2">{successContent.subtitle}</h3>
+							<p className="text-gray-600 leading-relaxed mb-2">{successContent.description}</p>
+						</div>
+						<Button
+							onClick={() => setSuccessDialog({ open: false, type: null, message: '' })}
+							className="w-full rounded-full py-6 text-base cursor-pointer"
+						>
+							Close
+						</Button>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

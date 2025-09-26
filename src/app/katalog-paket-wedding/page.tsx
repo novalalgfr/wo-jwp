@@ -1,6 +1,7 @@
 'use client';
 
-import Card from '@/components/custom/Card';
+// Ganti import Card dengan PaketCard yang baru
+import PaketCard from '@/components/custom/PaketCard';
 import FormPesanan from '@/components/custom/FormPesanan';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -15,6 +16,9 @@ interface PaketWedding {
 	harga_paket: number;
 	gambar_paket: string | null;
 }
+
+// Skeleton Loader Component
+const PaketCardSkeleton = () => <div className="h-[550px] rounded-4xl bg-gray-200 animate-pulse"></div>;
 
 export default function KatalogPaketWeddingPage() {
 	const [paketList, setPaketList] = useState<PaketWedding[]>([]);
@@ -32,16 +36,17 @@ export default function KatalogPaketWeddingPage() {
 	const fetchPaketWedding = async () => {
 		try {
 			setLoading(true);
+			setError(null); // Reset error state
 			const response = await fetch('/api/paket-wedding');
 
 			if (!response.ok) {
-				throw new Error('Failed to fetch data');
+				throw new Error('Gagal memuat data paket. Silakan coba lagi.');
 			}
 
 			const result = await response.json();
 			setPaketList(result.data);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'An error occurred');
+			setError(err instanceof Error ? err.message : 'Terjadi kesalahan tidak terduga');
 		} finally {
 			setLoading(false);
 		}
@@ -72,166 +77,184 @@ export default function KatalogPaketWeddingPage() {
 	};
 
 	const formatCurrency = (amount: number) => {
-		return new Intl.NumberFormat('id-ID', {
+		return new Intl.NumberFormat('en-US', {
 			style: 'currency',
-			currency: 'IDR',
+			currency: 'USD',
 			minimumFractionDigits: 0
 		}).format(amount);
 	};
 
+	const formatTitle = (title: string) => {
+		return title.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+	};
+
 	if (loading) {
 		return (
-			<div className="min-h-screen">
-				<h1 className="text-3xl font-bold mb-6">Katalog Paket Wedding</h1>
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+			<section className="space-y-12">
+				<div className="shadow-sm rounded-4xl p-16 text-center">
+					<h1 className="text-5xl mb-4">Pilih Paket Impian Anda</h1>
+					<p className="text-lg max-w-2xl mx-auto">
+						Kami telah menyiapkan berbagai pilihan paket yang dirancang dengan cermat untuk mewujudkan hari
+						spesial Anda.
+					</p>
+				</div>
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 					{[...Array(4)].map((_, i) => (
-						<div
-							key={i}
-							className="h-96 rounded-lg bg-gray-200 animate-pulse"
-						/>
+						<PaketCardSkeleton key={i} />
 					))}
 				</div>
-			</div>
+			</section>
 		);
 	}
 
 	if (error) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<div className="text-center">
-					<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-						Error: {error}
-					</div>
-					<button
+			<section className="min-h-[70vh] flex items-center justify-center">
+				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
+					<h2 className="text-3xl font-semibold">Oops! Terjadi Kesalahan</h2>
+					<p className="text-lg text-gray-600">{error}</p>
+					<Button
 						onClick={fetchPaketWedding}
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						className="bg-[#F6F4F0] text-base hover:bg-gray-200 text-black rounded-full p-6"
 					>
 						Coba Lagi
-					</button>
+					</Button>
 				</div>
-			</div>
+			</section>
 		);
 	}
 
 	return (
 		<>
-			<h1 className="text-3xl font-bold mb-6">Katalog Paket Wedding</h1>
-			{paketList.length === 0 ? (
-				<div className="text-center py-12">
-					<p className="text-gray-500 text-lg">Belum ada paket wedding tersedia</p>
+			<section className="space-y-12">
+				<div className="shadow-sm rounded-4xl p-16 text-center">
+					<h1 className="text-5xl mb-4">Choose Your Dream Package</h1>
+					<p className="text-lg max-w-2xl mx-auto">
+						We have carefully prepared a variety of packages designed to make your special day
+						unforgettable.
+					</p>
 				</div>
-			) : (
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-					{paketList.map((paket) => (
-						<Card
-							key={paket.id}
-							price={formatCurrency(paket.harga_paket)}
-							title={paket.nama_paket.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
-							buttonText="Lihat Detail"
-							imageUrl={paket.gambar_paket || undefined}
-							imageAlt={paket.nama_paket}
-							onButtonClick={() => handleViewDetail(paket)}
-						/>
-					))}
+
+				{paketList.length === 0 ? (
+					<div className="text-center py-20">
+						<p className="text-gray-500 text-xl">Belum ada paket wedding yang tersedia saat ini.</p>
+					</div>
+				) : (
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+						{paketList.map((paket) => (
+							<PaketCard
+								key={paket.id}
+								price={formatCurrency(paket.harga_paket)}
+								title={formatTitle(paket.nama_paket)}
+								imageUrl={paket.gambar_paket || undefined}
+								onButtonClick={() => handleViewDetail(paket)}
+							/>
+						))}
+					</div>
+				)}
+				<div className="grid grid-cols-3 items-center">
+					<div className="text-5xl">
+						Ready to start <br /> planning?
+					</div>
+					<div className="col-span-2 shadow-sm rounded-4xl p-6 text-lg">
+						Browse through our wedding packages and find the perfect fit for your special day. Each package
+						can be customized to match your vision and budget. Click on any package to see full details and
+						start your booking.
+					</div>
 				</div>
-			)}
+			</section>
 
 			<Dialog
 				open={dialogOpen}
 				onOpenChange={handleDialogOpenChange}
 			>
-				<DialogContent className="!max-w-5xl !w-full max-h-[80vh] overflow-y-auto">
-					<DialogHeader className="mb-1">
-						<DialogTitle className="text-xl">
-							{showOrderForm ? 'Form Pemesanan' : 'Detail Paket Wedding'}
-						</DialogTitle>
-					</DialogHeader>
-
+				<DialogContent className="!max-w-5xl !w-full max-h-[90vh] overflow-y-auto !rounded-4xl p-2">
 					{selectedPackage && (
-						<div className="space-y-6">
-							{!showOrderForm ? (
-								<>
-									{selectedPackage.gambar_paket && (
-										<div>
-											<div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden">
-												<Image
-													src={selectedPackage.gambar_paket}
-													alt={selectedPackage.nama_paket}
-													fill
-													className="object-cover"
-													sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-												/>
-											</div>
-										</div>
-									)}
-									<div>
-										<h3 className="text-2xl font-semibold mb-1">
-											{selectedPackage.nama_paket
-												.toLowerCase()
-												.replace(/\b\w/g, (char) => char.toUpperCase())}
-										</h3>
-										<p className="text-base font-medium">
+						<>
+							{showOrderForm ? (
+								<div className="p-8">
+									<DialogHeader className="mb-4">
+										<DialogTitle className="text-2xl">Order Form</DialogTitle>
+									</DialogHeader>
+									<FormPesanan
+										selectedPackage={selectedPackage}
+										onSuccess={handleOrderSuccess}
+										onBack={() => setShowOrderForm(false)}
+										formatCurrency={formatCurrency}
+									/>
+								</div>
+							) : (
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start p-4">
+									<div className="relative w-full aspect-square md:aspect-[3/4] rounded-3xl overflow-hidden">
+										<Image
+											src={selectedPackage.gambar_paket || '/images/placeholder.jpg'}
+											alt={selectedPackage.nama_paket}
+											fill
+											className="object-cover"
+											sizes="(max-width: 768px) 100vw, 50vw"
+										/>
+									</div>
+									<div className="py-4 pr-4 flex flex-col h-full">
+										<DialogHeader>
+											<DialogTitle className="text-4xl leading-tight mb-2">
+												{formatTitle(selectedPackage.nama_paket)}
+											</DialogTitle>
+										</DialogHeader>
+										<p className="text-2xl font-semibold text-gray-800 mb-6">
 											{formatCurrency(selectedPackage.harga_paket)}
 										</p>
-									</div>
-									<div>
-										<h4 className="font-medium mb-2">Deskripsi:</h4>
-										<div className="text-gray-600 whitespace-pre-wrap leading-relaxed">
-											{selectedPackage.deskripsi_paket}
+										<div className="mb-8">
+											<h4 className="font-semibold mb-2 text-lg">Package Description:</h4>
+											<div className="text-gray-600 whitespace-pre-wrap leading-relaxed">
+												{selectedPackage.deskripsi_paket}
+											</div>
+										</div>
+
+										{/* Tombol didorong ke bawah */}
+										<div className="mt-auto">
+											<Button
+												onClick={handleOrderPackage}
+												size="lg"
+												className="w-full rounded-full text-base py-6 cursor-pointer"
+											>
+												Order This Package
+											</Button>
 										</div>
 									</div>
-									<Button
-										className="cursor-pointer"
-										onClick={handleOrderPackage}
-									>
-										Pesan Paket
-									</Button>
-								</>
-							) : (
-								<FormPesanan
-									selectedPackage={selectedPackage}
-									onSuccess={handleOrderSuccess}
-									onBack={() => setShowOrderForm(false)}
-									formatCurrency={formatCurrency}
-								/>
+								</div>
 							)}
-						</div>
+						</>
 					)}
 				</DialogContent>
 			</Dialog>
+
 			<Dialog
 				open={showSuccessDialog}
 				onOpenChange={setShowSuccessDialog}
 			>
-				<DialogContent className="max-w-md">
+				<DialogContent className="max-w-md !rounded-4xl">
 					<DialogHeader>
-						<DialogTitle className="text-center">Pesanan Berhasil!</DialogTitle>
+						<DialogTitle className="text-center text-3xl pt-4">Order Successful!</DialogTitle>
 					</DialogHeader>
-
-					<div className="text-center space-y-4 py-4">
-						<div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-							<CheckCircle className="h-8 w-8 text-green-600" />
+					<div className="text-center space-y-4 p-6">
+						<div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+							<CheckCircle className="h-10 w-10 text-green-600" />
 						</div>
-
 						<div>
-							<h3 className="text-lg font-semibold mb-2">Terima kasih!</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								Pesanan Anda telah berhasil dikirim. Tim kami akan menghubungi Anda dalam waktu 1x24 jam
-								untuk konfirmasi lebih lanjut.
+							<h3 className="text-xl font-semibold mb-2">Thank You!</h3>
+							<p className="text-gray-600 leading-relaxed">
+								Your order has been received. Our team will contact you within 1x24 hours for further
+								confirmation.
 							</p>
 						</div>
-
-						<div className="bg-blue-50 p-4 rounded-lg">
-							<p className="text-blue-800 text-sm font-medium">
-								Pastikan nomor telepon dan email Anda aktif
-							</p>
+						<div className="bg-[#F6F4F0] p-4 rounded-2xl">
+							<p className="text-sm font-medium">Make sure your phone number and email are active.</p>
 						</div>
-
 						<Button
 							onClick={() => setShowSuccessDialog(false)}
-							className="w-full cursor-pointer"
+							className="w-full rounded-full py-6 text-base cursor-pointer"
 						>
-							Tutup
+							Close
 						</Button>
 					</div>
 				</DialogContent>

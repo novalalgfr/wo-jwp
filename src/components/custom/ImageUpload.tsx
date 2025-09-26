@@ -186,7 +186,7 @@ const ImageUpload = ({
 						<Button
 							type="button"
 							onClick={handleClick}
-							className="mt-2 px-3 py-1 text-sm rounded transition-colors flex items-center gap-2 cursor-pointer"
+							className="mt-2 px-3 py-1 text-sm transition-colors flex items-center gap-2 cursor-pointer"
 						>
 							<ImageIcon className="h-4 w-4" />
 							Ganti Gambar
