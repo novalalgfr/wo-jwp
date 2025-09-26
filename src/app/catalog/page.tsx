@@ -150,7 +150,7 @@ export default function CatalogPage() {
 						))}
 					</div>
 				)}
-				<div className="grid grid-cols-3 items-center">
+				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 items-center">
 					<div className="text-5xl">
 						Ready to start <br /> planning?
 					</div>
