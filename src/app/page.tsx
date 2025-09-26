@@ -31,7 +31,7 @@ export default function Home() {
 						wedding day manager on your big day, we will take care of exactly whay you want us to do, so you
 						can relax and enjoy your wedding
 					</p>
-					<div className="flex items-center">
+					<div className="flex items-center shadow-sm rounded-full">
 						<Button className="bg-[#F6F4F0] text-base hover:bg-[#F6F4F0] text-black rounded-full p-6 pr-12 cursor-pointer">
 							Get in touch
 						</Button>
@@ -52,7 +52,7 @@ export default function Home() {
 				></div>
 			</div>
 			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
-				<div className="bg-[#F6F4F0] rounded-full p-8 flex items-center gap-6">
+				<div className="bg-[#F6F4F0] shadow-sm rounded-full p-8 flex items-center gap-6">
 					<h4 className="text-xl text-nowrap font-semibold">What Our Couples Say:</h4>
 					<p className="text-base">
 						<span className="italic">
@@ -85,7 +85,7 @@ export default function Home() {
 							View our gallery <MoveUpRight />
 						</Button>
 					</div>
-					<div className="bg-[#F6F4F0] rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
+					<div className="bg-[#F6F4F0] shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
 						<div className="flex-1 flex items-center">
 							<h6 className="text-4xl">120+</h6>
 						</div>
