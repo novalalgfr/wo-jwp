@@ -8,7 +8,7 @@ export default function Home() {
 		<section className="space-y-12">
 			<div className="grid grid-cols-3 gap-6">
 				<div
-					className="h-[600px] rounded-4xl flex flex-col justify-between p-6 bg-cover bg-bottom"
+					className="h-[700px] rounded-4xl flex flex-col justify-between p-6 bg-cover bg-bottom"
 					style={{ backgroundImage: "url('/images/beranda-1.jpg')" }}
 				>
 					<p className="ml-auto text-base text-white border border-white rounded-full px-6 py-2">
@@ -45,7 +45,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div
-					className="bg-gray-300 h-[600px] rounded-4xl bg-cover bg-center"
+					className="bg-gray-300 h-[700px] rounded-4xl bg-cover bg-center"
 					style={{ backgroundImage: "url('/images/beranda-2.jpg')" }}
 				></div>
 			</div>
@@ -57,7 +57,7 @@ export default function Home() {
 							&apos;From the beautiful decor to the seamless coordination, W. exceeded our expectations in
 							every way. They made our dream wedding a reality.&apos;
 						</span>
-						<span className="font-semibold">- Raya & Juna</span>
+						<span className="font-semibold">- John & Jane</span>
 					</p>
 				</div>
 				<div>

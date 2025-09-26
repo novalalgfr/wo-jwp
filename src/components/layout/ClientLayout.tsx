@@ -38,28 +38,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 			<Navbar />
 			<main className="max-w-[1720px] mx-auto my-6">{children}</main>
 			<Footer />
-			{/* <footer>
-				<div className="max-w-[1720px] mx-auto px-4 py-12 border-t-2 border-dashed flex justify-between items-center">
-					<Link
-						href="/"
-						className="flex items-center space-x-2 font-black text-2xl"
-					>
-						W.
-					</Link>
-					<div className="flex gap-4">
-						<p className="text-sm text-gray-900 font-semibold">Connect :</p>
-						{footerItems.map((item) => (
-							<Link
-								key={item.title}
-								href={item.href}
-								className="text-sm font-medium transition-all hover:opacity-70 focus:opacity-70 focus:outline-none"
-							>
-								{item.title}
-							</Link>
-						))}
-					</div>
-				</div>
-			</footer> */}
 		</>
 	);
 }

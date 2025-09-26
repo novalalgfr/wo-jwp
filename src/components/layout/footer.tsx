@@ -100,11 +100,7 @@ export function Footer() {
 							<div className="flex items-start gap-3">
 								<MapPin className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
 								<p className="text-gray-600 text-base">
-									Jl. Sudirman No. 123
-									<br />
-									Jakarta Pusat 10220
-									<br />
-									Indonesia
+									Jl. Sudirman No. 123 Jakarta Pusat 10220 Indonesia
 								</p>
 							</div>
 							<div className="flex items-center gap-3">
