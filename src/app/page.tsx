@@ -7,7 +7,10 @@ export default function Home() {
 	return (
 		<section className="space-y-12">
 			<div className="grid grid-cols-3 gap-6">
-				<div className="bg-gray-300 h-[550px] rounded-4xl flex flex-col justify-between p-6">
+				<div
+					className="h-[600px] rounded-4xl flex flex-col justify-between p-6 bg-cover bg-bottom"
+					style={{ backgroundImage: "url('/images/beranda-1.jpg')" }}
+				>
 					<p className="ml-auto text-base text-white border border-white rounded-full px-6 py-2">
 						a day to remember
 					</p>
@@ -41,7 +44,10 @@ export default function Home() {
 						</Button>
 					</div>
 				</div>
-				<div className="bg-gray-300 h-[550px] rounded-4xl"></div>
+				<div
+					className="bg-gray-300 h-[600px] rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-2.jpg')" }}
+				></div>
 			</div>
 			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
 				<div className="bg-[#F6F4F0] rounded-full p-8 flex items-center gap-6">
@@ -63,7 +69,10 @@ export default function Home() {
 			</div>
 			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
 				<div className="grid grid-cols-3 gap-6">
-					<div className="bg-gray-300 w-full h-[276px] rounded-4xl"></div>
+					<div
+						className="bg-gray-300 w-full h-[276px] rounded-4xl bg-cover bg-center"
+						style={{ backgroundImage: "url('/images/beranda-3.jpg')" }}
+					></div>
 					<div className="shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
 						<div className="flex-1 flex items-center">
 							<p className="text-lg">
@@ -88,12 +97,15 @@ export default function Home() {
 				</div>
 			</div>
 			<div className="grid grid-cols-3 gap-6">
-				<div className="bg-gray-900 rounded-4xl grid grid-cols-1 gap-6 p-10">
-					<div className="bg-white/70 text-white rounded-full p-6 text-lg">01. Initial Consultation</div>
-					<div className="bg-white/70 text-white rounded-full p-6 text-lg">02. Planning and Design</div>
-					<div className="bg-white/70 text-white rounded-full p-6 text-lg">03. Vendor Coordination</div>
-					<div className="bg-white/70 text-white rounded-full p-6 text-lg">04. Final Preparations</div>
-					<div className="bg-white/70 text-white rounded-full p-6 text-lg">05. The Big Day</div>
+				<div
+					className="bg-gray-900 rounded-4xl grid grid-cols-1 gap-6 p-10 bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-4.jpg')" }}
+				>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">01. Initial Consultation</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">02. Planning and Design</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">03. Vendor Coordination</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">04. Final Preparations</div>
+					<div className="bg-white/50 text-white rounded-full p-6 text-lg">05. The Big Day</div>
 					<div className="text-base text-white mt-24">
 						From the grandest elements to the tiniest touches, we pride ourselves on our meticulous
 						attention to detail. Our goal is to create a seamless and memorable experience, leaving no stone
@@ -101,7 +113,10 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="grid grid-cols-1 gap-6">
-					<div className="bg-gray-300 h-[350px] rounded-4xl"></div>
+					<div
+						className="bg-gray-300 h-[350px] rounded-4xl bg-cover bg-center"
+						style={{ backgroundImage: "url('/images/beranda-5.jpg')" }}
+					></div>
 					<div className="w-full h-[300px] bg-transparent rounded-4xl flex items-center justify-center">
 						<div className="flex -space-x-42">
 							<div className="w-[350px] h-[350px] shadow-sm rounded-full flex items-center justify-center bg-white">
@@ -122,7 +137,10 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-				<div className="bg-gray-300 h-[748px] rounded-4xl"></div>
+				<div
+					className="bg-gray-300 h-[748px] rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-6.jpg')" }}
+				></div>
 			</div>
 			<div className="grid grid-cols-3 items-center">
 				<div className="text-5xl">
@@ -136,10 +154,22 @@ export default function Home() {
 				</div>
 			</div>
 			<div className="grid grid-cols-3 gap-6">
-				<div className="row-span-2 bg-gray-300 h-full rounded-4xl"></div>
-				<div className="bg-gray-300 h-[300px] rounded-4xl"></div>
-				<div className="row-span-2 bg-gray-300 h-full rounded-4xl"></div>
-				<div className="bg-gray-300 h-[300px] rounded-4xl"></div>
+				<div
+					className="row-span-2 bg-gray-300 h-full rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-7.jpg')" }}
+				></div>
+				<div
+					className="bg-gray-300 h-[300px] rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-8.jpg')" }}
+				></div>
+				<div
+					className="row-span-2 bg-gray-300 h-full rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-10.jpg')" }}
+				></div>
+				<div
+					className="bg-gray-300 h-[300px] rounded-4xl bg-cover bg-center"
+					style={{ backgroundImage: "url('/images/beranda-9.jpg')" }}
+				></div>
 			</div>
 		</section>
 	);

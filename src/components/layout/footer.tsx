@@ -35,21 +35,21 @@ export function Footer() {
 							<Button
 								variant="outline"
 								size="icon"
-								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] hover:border-gray-400"
+								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] cursor-pointer hover:border-gray-400"
 							>
 								<Instagram className="h-5 w-5" />
 							</Button>
 							<Button
 								variant="outline"
 								size="icon"
-								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] hover:border-gray-400"
+								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] cursor-pointer hover:border-gray-400"
 							>
 								<Facebook className="h-5 w-5" />
 							</Button>
 							<Button
 								variant="outline"
 								size="icon"
-								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] hover:border-gray-400"
+								className="rounded-full border-gray-300 hover:bg-[#F6F4F0] cursor-pointer hover:border-gray-400"
 							>
 								<Mail className="h-5 w-5" />
 							</Button>
@@ -72,14 +72,6 @@ export function Footer() {
 										</Link>
 									</li>
 								))}
-								<li>
-									<Link
-										href="/gallery"
-										className="text-gray-600 hover:text-black transition-colors text-base"
-									>
-										Gallery
-									</Link>
-								</li>
 							</ul>
 						</div>
 
