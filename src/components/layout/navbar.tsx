@@ -21,8 +21,8 @@ export function Navbar() {
 
 	const navItems = [
 		{ title: 'Home', href: '/' },
-		{ title: 'Catalog', href: '/katalog-paket-wedding' },
-		{ title: 'Contact Us', href: '/kontak-kami' }
+		{ title: 'Catalog', href: '/catalog' },
+		{ title: 'Contact Us', href: '/contact-us' }
 	];
 
 	return (

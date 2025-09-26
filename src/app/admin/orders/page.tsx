@@ -24,7 +24,7 @@ interface Pesanan {
 	no_telp: string;
 	email: string;
 	status: 'request' | 'approved' | 'rejected';
-	nama_paket?: string; // Dari join dengan paket_wedding
+	nama_paket?: string; // From join with paket_wedding
 	created_at?: string;
 }
 
@@ -67,7 +67,7 @@ export default function DataPesananPage() {
 						className="bg-yellow-100 text-yellow-800 border-yellow-200"
 					>
 						<Clock className="w-3 h-3 mr-1" />
-						Menunggu
+						Pending
 					</Badge>
 				);
 			case 'approved':
@@ -77,7 +77,7 @@ export default function DataPesananPage() {
 						className="bg-green-100 text-green-800 border-green-200"
 					>
 						<Check className="w-3 h-3 mr-1" />
-						Disetujui
+						Approved
 					</Badge>
 				);
 			case 'rejected':
@@ -87,7 +87,7 @@ export default function DataPesananPage() {
 						className="bg-red-100 text-red-800 border-red-200"
 					>
 						<X className="w-3 h-3 mr-1" />
-						Ditolak
+						Rejected
 					</Badge>
 				);
 			default:
@@ -123,22 +123,21 @@ export default function DataPesananPage() {
 				await fetchPesanan();
 				setStatusDialog({ open: false, pesananId: null, currentStatus: '', newStatus: 'approved' });
 
-				// Show success dialog instead of alert
 				setSuccessDialog({
 					open: true,
-					title: statusDialog.newStatus === 'approved' ? 'Pesanan Disetujui!' : 'Pesanan Ditolak!',
+					title: statusDialog.newStatus === 'approved' ? 'Order Approved!' : 'Order Rejected!',
 					message:
 						statusDialog.newStatus === 'approved'
-							? 'Pesanan berhasil disetujui. Customer akan dihubungi untuk proses selanjutnya.'
-							: 'Pesanan telah ditolak. Customer akan diinformasikan mengenai penolakan ini.',
+							? 'The order has been successfully approved. The customer will be contacted for the next steps.'
+							: 'The order has been rejected. The customer will be informed about this decision.',
 					actionType: statusDialog.newStatus
 				});
 			} else {
-				alert(result.message || 'Terjadi kesalahan');
+				alert(result.message || 'An error occurred');
 			}
 		} catch (error) {
 			console.error('Error updating status:', error);
-			alert('Terjadi kesalahan');
+			alert('An error occurred');
 		}
 	};
 
@@ -150,12 +149,12 @@ export default function DataPesananPage() {
 		},
 		{
 			accessorKey: 'nama_pemesan',
-			header: createSortableHeader<Pesanan>('Nama Pemesan'),
+			header: createSortableHeader<Pesanan>('Customer Name'),
 			cell: ({ row }) => <div className="font-medium">{row.getValue('nama_pemesan')}</div>
 		},
 		{
 			accessorKey: 'nama_paket',
-			header: 'Paket Wedding',
+			header: 'Wedding Package',
 			cell: ({ row }) => {
 				const value = row.getValue<string>('nama_paket');
 				return (
@@ -167,7 +166,7 @@ export default function DataPesananPage() {
 		},
 		{
 			accessorKey: 'no_telp',
-			header: 'No. Telepon',
+			header: 'Phone Number',
 			cell: ({ row }) => <div>{row.getValue('no_telp')}</div>
 		},
 		{
@@ -189,7 +188,7 @@ export default function DataPesananPage() {
 		},
 		{
 			id: 'actions',
-			header: 'Aksi',
+			header: 'Actions',
 			cell: ({ row }) => {
 				const status = row.getValue('status') as string;
 				const pesananId = row.original.id;
@@ -204,7 +203,7 @@ export default function DataPesananPage() {
 								onClick={() => handleStatusUpdate(pesananId, status, 'approved')}
 							>
 								<Check className="w-4 h-4 mr-1" />
-								Setujui
+								Approve
 							</Button>
 							{/* <Button
 								size="sm"
@@ -213,14 +212,14 @@ export default function DataPesananPage() {
 								onClick={() => handleStatusUpdate(pesananId, status, 'rejected')}
 							>
 								<X className="w-4 h-4 mr-1" />
-								Tolak
+								Reject
 							</Button> */}
 						</div>
 					);
 				} else {
 					return (
 						<div className="text-sm text-gray-500">
-							{status === 'approved' ? 'Telah disetujui' : 'Telah ditolak'}
+							{status === 'approved' ? 'Already approved' : 'Already rejected'}
 						</div>
 					);
 				}
@@ -238,7 +237,7 @@ export default function DataPesananPage() {
 			const result = await response.json();
 			setPesanan(result.data || []);
 		} catch (error) {
-			console.error('Error fetching pesanan:', error);
+			console.error('Error fetching orders:', error);
 		} finally {
 			setLoading(false);
 		}
@@ -260,15 +259,15 @@ export default function DataPesananPage() {
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-6">
-				<h1 className="text-3xl font-bold">Data Pesanan</h1>
+				<h1 className="text-3xl font-bold">Order Data</h1>
 			</div>
 
 			<DataTable
 				columns={columns}
 				data={pesanan}
 				searchKey="nama_pemesan"
-				searchPlaceholder="Cari nama pemesan..."
-				emptyMessage="Belum ada pesanan."
+				searchPlaceholder="Search by customer name..."
+				emptyMessage="No orders yet."
 			/>
 
 			<AlertDialog
@@ -277,19 +276,19 @@ export default function DataPesananPage() {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Konfirmasi Perubahan Status</AlertDialogTitle>
+						<AlertDialogTitle>Confirm Status Change</AlertDialogTitle>
 						<AlertDialogDescription>
-							Apakah Anda yakin ingin {statusDialog.newStatus === 'approved' ? 'menyetujui' : 'menolak'}{' '}
-							pesanan ini?
+							Are you sure you want to {statusDialog.newStatus === 'approved' ? 'approve' : 'reject'} this
+							order?
 							<br />
 							<span className="font-medium mt-2 block">
-								Status akan berubah dari &quot;{statusDialog.currentStatus}&quot; menjadi &quot;
+								The status will change from &quot;{statusDialog.currentStatus}&quot; to &quot;
 								{statusDialog.newStatus}&quot;.
 							</span>
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Batal</AlertDialogCancel>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={confirmStatusUpdate}
 							className={
@@ -298,11 +297,12 @@ export default function DataPesananPage() {
 									: 'bg-red-600 hover:bg-red-700'
 							}
 						>
-							{statusDialog.newStatus === 'approved' ? 'Setujui' : 'Tolak'}
+							{statusDialog.newStatus === 'approved' ? 'Approve' : 'Reject'}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+
 			{/* Success Dialog */}
 			<AlertDialog
 				open={successDialog.open}
@@ -341,8 +341,8 @@ export default function DataPesananPage() {
 								}`}
 							>
 								{successDialog.actionType === 'approved'
-									? '✅ Status berhasil diubah ke "Disetujui"'
-									: '❌ Status berhasil diubah ke "Ditolak"'}
+									? '✅ Status successfully changed to "Approved"'
+									: '❌ Status successfully changed to "Rejected"'}
 							</p>
 						</div>
 
@@ -354,7 +354,7 @@ export default function DataPesananPage() {
 									: 'bg-red-600 hover:bg-red-700'
 							}`}
 						>
-							Tutup
+							Close
 						</Button>
 					</div>
 				</AlertDialogContent>

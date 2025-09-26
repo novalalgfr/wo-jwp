@@ -7,22 +7,20 @@ import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 export function Footer() {
 	const navItems = [
 		{ title: 'Home', href: '/' },
-		{ title: 'Catalog', href: '/katalog-paket-wedding' },
-		{ title: 'Contact Us', href: '/kontak-kami' }
+		{ title: 'Catalog', href: '/catalog' },
+		{ title: 'Contact Us', href: '/contact-us' }
 	];
 
 	const services = [
-		{ title: 'Full Service Wedding Planning', href: '/services/full-service' },
-		{ title: 'A La Carte Wedding Planning', href: '/services/a-la-carte' },
-		{ title: 'Month-Of Wedding Management', href: '/services/month-of' }
+		{ title: 'Full Service Wedding Planning', href: '/' },
+		{ title: 'A La Carte Wedding Planning', href: '/' },
+		{ title: 'Month-Of Wedding Management', href: '/' }
 	];
 
 	return (
 		<footer className="w-full mt-24">
 			<div className="max-w-[1720px] mx-auto border-t-2 border-dashed py-12">
-				{/* Main Footer Content */}
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
-					{/* Brand Section */}
 					<div className="space-y-6">
 						<div className="flex items-center space-x-2">
 							<h2 className="font-black text-4xl">W.</h2>
@@ -56,9 +54,7 @@ export function Footer() {
 						</div>
 					</div>
 
-					{/* Navigation & Services */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-						{/* Quick Links */}
 						<div className="space-y-4">
 							<h3 className="text-xl font-semibold">Quick Links</h3>
 							<ul className="space-y-3">
@@ -75,7 +71,6 @@ export function Footer() {
 							</ul>
 						</div>
 
-						{/* Services */}
 						<div className="space-y-4">
 							<h3 className="text-xl font-semibold">Our Services</h3>
 							<ul className="space-y-3">
@@ -93,7 +88,6 @@ export function Footer() {
 						</div>
 					</div>
 
-					{/* Contact Info */}
 					<div className="space-y-6">
 						<h3 className="text-xl font-semibold">Get In Touch</h3>
 						<div className="space-y-4">
@@ -115,7 +109,6 @@ export function Footer() {
 					</div>
 				</div>
 
-				{/* Bottom Bar */}
 				<div className="flex flex-col md:flex-row justify-between items-center gap-4">
 					<p className="text-gray-500 text-sm">© 2025 W. Wedding Planner. All rights reserved.</p>
 					<div className="flex items-center gap-6">

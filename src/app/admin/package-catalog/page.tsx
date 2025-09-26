@@ -76,12 +76,12 @@ export default function KatalogPaketWeddingPage() {
 		},
 		{
 			accessorKey: 'nama_paket',
-			header: createSortableHeader<PaketWedding>('Nama Paket'),
+			header: createSortableHeader<PaketWedding>('Package Name'),
 			cell: ({ row }) => <div className="font-medium">{row.getValue('nama_paket')}</div>
 		},
 		{
 			accessorKey: 'deskripsi_paket',
-			header: 'Deskripsi',
+			header: 'Description',
 			cell: ({ row }) => {
 				const desc = row.getValue('deskripsi_paket') as string;
 				return (
@@ -98,7 +98,7 @@ export default function KatalogPaketWeddingPage() {
 		},
 		{
 			accessorKey: 'harga_paket',
-			header: createSortableHeader<PaketWedding>('Harga'),
+			header: createSortableHeader<PaketWedding>('Price'),
 			cell: ({ row }) => {
 				const harga = parseFloat(row.getValue('harga_paket') as string);
 				return (
@@ -113,7 +113,7 @@ export default function KatalogPaketWeddingPage() {
 		},
 		{
 			accessorKey: 'gambar_paket',
-			header: 'Gambar',
+			header: 'Image',
 			cell: ({ row }) => {
 				const gambar = row.getValue('gambar_paket') as string | null;
 				return gambar ? (
@@ -147,7 +147,7 @@ export default function KatalogPaketWeddingPage() {
 					className="text-red-600 hover:!text-red-600 cursor-pointer"
 				>
 					<Trash2 className="mr-2 h-4 w-4" />
-					Hapus
+					Delete
 				</DropdownMenuItem>
 			</>
 		))
@@ -215,12 +215,11 @@ export default function KatalogPaketWeddingPage() {
 				resetForm();
 				showSuccessDialog(editMode ? 'edit' : 'create', result.message);
 			} else {
-				// You could also create an error dialog here
-				alert(result.message || 'Terjadi kesalahan');
+				alert(result.message || 'An error occurred');
 			}
 		} catch (error) {
 			console.error('Error submitting form:', error);
-			alert('Terjadi kesalahan');
+			alert('An error occurred');
 		}
 	};
 
@@ -249,11 +248,11 @@ export default function KatalogPaketWeddingPage() {
 				setDeleteDialog({ open: false, id: null });
 				showSuccessDialog('delete', result.message);
 			} else {
-				alert(result.message || 'Terjadi kesalahan');
+				alert(result.message || 'An error occurred');
 			}
 		} catch (error) {
 			console.error('Error deleting paket wedding:', error);
-			alert('Terjadi kesalahan');
+			alert('An error occurred');
 		}
 	};
 
@@ -268,33 +267,33 @@ export default function KatalogPaketWeddingPage() {
 		switch (successDialog.type) {
 			case 'create':
 				return {
-					title: 'Paket Berhasil Dibuat!',
-					subtitle: 'Berhasil!',
-					description: 'Paket wedding baru telah berhasil ditambahkan ke katalog.',
+					title: 'Package Created Successfully!',
+					subtitle: 'Success!',
+					description: 'The new wedding package has been successfully added to the catalog.',
 					bgColor: 'bg-green-100',
 					iconColor: 'text-green-600'
 				};
 			case 'edit':
 				return {
-					title: 'Paket Berhasil Diupdate!',
-					subtitle: 'Berhasil!',
-					description: 'Perubahan paket wedding telah berhasil disimpan.',
+					title: 'Package Updated Successfully!',
+					subtitle: 'Success!',
+					description: 'The wedding package changes have been successfully saved.',
 					bgColor: 'bg-blue-100',
 					iconColor: 'text-blue-600'
 				};
 			case 'delete':
 				return {
-					title: 'Paket Berhasil Dihapus!',
-					subtitle: 'Berhasil!',
-					description: 'Paket wedding telah berhasil dihapus dari katalog.',
+					title: 'Package Deleted Successfully!',
+					subtitle: 'Success!',
+					description: 'The wedding package has been successfully removed from the catalog.',
 					bgColor: 'bg-red-100',
 					iconColor: 'text-red-600'
 				};
 			default:
 				return {
-					title: 'Operasi Berhasil!',
-					subtitle: 'Berhasil!',
-					description: 'Operasi telah berhasil dilakukan.',
+					title: 'Operation Successful!',
+					subtitle: 'Success!',
+					description: 'The operation was completed successfully.',
 					bgColor: 'bg-green-100',
 					iconColor: 'text-green-600'
 				};
@@ -320,7 +319,7 @@ export default function KatalogPaketWeddingPage() {
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-2">
-				<h1 className="text-3xl font-bold">Paket Wedding</h1>
+				<h1 className="text-3xl font-bold">Wedding Packages</h1>
 				<Dialog
 					open={dialogOpen}
 					onOpenChange={handleDialogOpenChange}
@@ -328,12 +327,12 @@ export default function KatalogPaketWeddingPage() {
 					<DialogTrigger asChild>
 						<Button className="flex items-center gap-2 cursor-pointer">
 							<Plus className="h-4 w-4" />
-							Tambah Paket
+							Add Package
 						</Button>
 					</DialogTrigger>
 					<DialogContent className="max-w-2xl !rounded-4xl">
 						<DialogHeader className="mb-6">
-							<DialogTitle>{editMode ? 'Edit Paket Wedding' : 'Tambah Paket Wedding'}</DialogTitle>
+							<DialogTitle>{editMode ? 'Edit Wedding Package' : 'Add Wedding Package'}</DialogTitle>
 						</DialogHeader>
 
 						<form
@@ -342,8 +341,8 @@ export default function KatalogPaketWeddingPage() {
 						>
 							<TextBox
 								id="nama_paket"
-								label="Nama Paket"
-								placeholder="Masukkan nama paket"
+								label="Package Name"
+								placeholder="Enter package name"
 								validation="text"
 								value={formData.nama_paket}
 								onChange={(e) => setFormData((prev) => ({ ...prev, nama_paket: e.target.value }))}
@@ -352,8 +351,8 @@ export default function KatalogPaketWeddingPage() {
 
 							<TextBox
 								id="deskripsi_paket"
-								label="Deskripsi Paket"
-								placeholder="Masukkan deskripsi paket"
+								label="Package Description"
+								placeholder="Enter package description"
 								validation="text"
 								type="textarea"
 								value={formData.deskripsi_paket}
@@ -363,8 +362,8 @@ export default function KatalogPaketWeddingPage() {
 
 							<TextBox
 								id="harga_paket"
-								label="Harga Paket"
-								placeholder="Masukkan harga paket"
+								label="Package Price"
+								placeholder="Enter package price"
 								validation="number"
 								value={formData.harga_paket}
 								onChange={(e) => setFormData((prev) => ({ ...prev, harga_paket: e.target.value }))}
@@ -373,7 +372,7 @@ export default function KatalogPaketWeddingPage() {
 
 							<ImageUpload
 								id="gambar_paket"
-								label="Gambar Paket"
+								label="Package Image"
 								value={formData.gambar_paket}
 								onChange={(file) => setFormData((prev) => ({ ...prev, gambar_paket: file }))}
 								maxSize={5}
@@ -386,13 +385,13 @@ export default function KatalogPaketWeddingPage() {
 									onClick={() => setDialogOpen(false)}
 									className="cursor-pointer rounded-full"
 								>
-									Batal
+									Cancel
 								</Button>
 								<Button
 									type="submit"
 									className="cursor-pointer rounded-full"
 								>
-									{editMode ? 'Update' : 'Simpan'}
+									{editMode ? 'Update' : 'Save'}
 								</Button>
 							</div>
 						</form>
@@ -404,8 +403,8 @@ export default function KatalogPaketWeddingPage() {
 				columns={columns}
 				data={paketWedding}
 				searchKey="nama_paket"
-				searchPlaceholder="Cari paket wedding..."
-				emptyMessage="Belum ada paket wedding."
+				searchPlaceholder="Search for a package..."
+				emptyMessage="No wedding packages found."
 			/>
 
 			{/* Delete Confirmation Dialog */}
@@ -415,18 +414,18 @@ export default function KatalogPaketWeddingPage() {
 			>
 				<AlertDialogContent className="!rounded-4xl">
 					<AlertDialogHeader>
-						<AlertDialogTitle>Konfirmasi Hapus</AlertDialogTitle>
+						<AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
 						<AlertDialogDescription>
-							Apakah Anda yakin ingin menghapus paket wedding ini? Aksi ini tidak dapat dibatalkan.
+							Are you sure you want to delete this wedding package? This action cannot be undone.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="rounded-full">Batal</AlertDialogCancel>
+						<AlertDialogCancel className="rounded-full">Cancel</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleDelete}
 							className="bg-red-600 hover:bg-red-700 rounded-full"
 						>
-							Hapus
+							Delete
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

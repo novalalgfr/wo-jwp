@@ -20,7 +20,7 @@ interface PaketWedding {
 // Skeleton Loader Component
 const PaketCardSkeleton = () => <div className="h-[550px] rounded-4xl bg-gray-200 animate-pulse"></div>;
 
-export default function KatalogPaketWeddingPage() {
+export default function CatalogPage() {
 	const [paketList, setPaketList] = useState<PaketWedding[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
