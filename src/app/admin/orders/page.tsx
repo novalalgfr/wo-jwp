@@ -182,6 +182,19 @@ export default function OrdersPage() {
 			)
 		},
 		{
+			accessorKey: 'created_at',
+			header: 'Order Date',
+			cell: ({ row }) => {
+				const date = new Date(row.getValue('created_at') as string);
+				return (
+					<div className="text-sm">
+						<div>{date.toLocaleDateString('id-ID')}</div>
+						<div className="text-gray-500">{date.toLocaleTimeString('id-ID')}</div>
+					</div>
+				);
+			}
+		},
+		{
 			accessorKey: 'status',
 			header: 'Status',
 			cell: ({ row }) => getStatusBadge(row.getValue('status') as string)
