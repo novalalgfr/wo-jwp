@@ -5,9 +5,18 @@ import { MoveUpRight } from 'lucide-react';
 
 export default function Home() {
 	return (
-		<section className="space-y-6">
+		<section className="space-y-12">
 			<div className="grid grid-cols-3 gap-6">
-				<div className="bg-gray-300 h-[550px] rounded-4xl"></div>
+				<div className="bg-gray-300 h-[550px] rounded-4xl flex flex-col justify-between p-6">
+					<p className="ml-auto text-base text-white border border-white rounded-full px-6 py-2">
+						a day to remember
+					</p>
+					<p className="text-lg text-white">
+						Welcome to W. where your dream day becomes our passion, from intimate gatherings to grand
+						celebrations, our dedicated team of experienced planners ensure that every detail is
+						meticulously curated to perfection.
+					</p>
+				</div>
 				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
 					<h1 className="text-5xl">
 						Made with <br /> lots of love
@@ -23,7 +32,7 @@ export default function Home() {
 						</Button>
 						<Button
 							size="icon"
-							className="w-[48px] h-[48px] rounded-full -ml-10"
+							className="w-[48px] h-[48px] rounded-full -ml-10 cursor-pointer"
 						>
 							<MoveUpRight
 								className="size-5"
@@ -39,8 +48,8 @@ export default function Home() {
 					<h4 className="text-xl text-nowrap font-semibold">What Our Couples Say:</h4>
 					<p className="text-base">
 						<span className="italic">
-							&apos;From the beautiful decor to the seamless coordination, Bliss & Bless exceeded our
-							expectations in every way. They made our dream wedding a reality.&apos;
+							&apos;From the beautiful decor to the seamless coordination, W. exceeded our expectations in
+							every way. They made our dream wedding a reality.&apos;
 						</span>
 						<span className="font-semibold">- Raya & Juna</span>
 					</p>
@@ -51,6 +60,8 @@ export default function Home() {
 						so you can savor every moment leading up to your special day
 					</h6>
 				</div>
+			</div>
+			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
 				<div className="grid grid-cols-3 gap-6">
 					<div className="bg-gray-300 w-full h-[276px] rounded-4xl"></div>
 					<div className="shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
@@ -112,6 +123,23 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="bg-gray-300 h-[748px] rounded-4xl"></div>
+			</div>
+			<div className="grid grid-cols-3 items-center">
+				<div className="text-5xl">
+					A moment of magic, <br /> a lifetime of love.
+				</div>
+				<div className="col-span-2 shadow-sm rounded-4xl p-6 text-lg">
+					We believe that your wedding should be a true reflection of your unique story. That&apos;s why we
+					speacialize in bringing your vision to life, no matter what style you envision for your big day.
+					From classic elegance to modern chic, rustic charm to glamor, we have the experience to make your
+					dream wedding a reality.
+				</div>
+			</div>
+			<div className="grid grid-cols-3 gap-6">
+				<div className="row-span-2 bg-gray-300 h-full rounded-4xl"></div>
+				<div className="bg-gray-300 h-[300px] rounded-4xl"></div>
+				<div className="row-span-2 bg-gray-300 h-full rounded-4xl"></div>
+				<div className="bg-gray-300 h-[300px] rounded-4xl"></div>
 			</div>
 		</section>
 	);
