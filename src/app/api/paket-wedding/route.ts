@@ -1,4 +1,3 @@
-// src/app/api/paket-wedding/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
@@ -7,7 +6,6 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 const uploadDir = path.join(process.cwd(), 'public/uploads');
 
-// Ensure upload directory exists
 if (!fs.existsSync(uploadDir)) {
 	fs.mkdirSync(uploadDir, { recursive: true });
 }

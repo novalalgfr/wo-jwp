@@ -250,7 +250,7 @@ export default function KatalogPaketWeddingPage() {
 
 	if (loading) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="">
 				<div className="flex justify-between items-center mb-6">
 					<div className="h-9 w-48 bg-gray-200 rounded animate-pulse"></div>
 					<div className="h-10 w-32 bg-gray-200 rounded animate-pulse"></div>
@@ -263,8 +263,8 @@ export default function KatalogPaketWeddingPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6">
-			<div className="flex justify-between items-center mb-6">
+		<div>
+			<div className="flex justify-between items-center mb-2">
 				<h1 className="text-3xl font-bold">Paket Wedding</h1>
 				<Dialog
 					open={dialogOpen}

@@ -16,7 +16,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 	const { data: session } = useSession();
 	const pathname = usePathname();
 
-	// Jangan render layout untuk halaman login
 	if (pathname === '/login') {
 		return <>{children}</>;
 	}
@@ -24,11 +23,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 	const isAdmin = !!session;
 	const isAdminRoute = pathname.startsWith('/admin');
 
-	// Jika mengakses route admin tapi tidak login, middleware akan redirect ke login
-	// Jadi di sini kita hanya perlu render layout sesuai kondisi
-
 	if (isAdminRoute && isAdmin) {
-		// Admin layout untuk route /admin/*
 		return (
 			<div className="flex min-h-screen">
 				<SideNavbar />
@@ -37,13 +32,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 		);
 	}
 
-	// User layout untuk route publik
 	return (
 		<>
 			<Navbar />
-			<main className="max-w-7xl mx-auto my-6">{children}</main>
+			<main className="max-w-[1720px] mx-auto my-6">{children}</main>
 			<footer>
-				<div className="max-w-[112rem] mx-auto px-4 py-12 border-t-2 border-dashed flex justify-between items-center">
+				<div className="max-w-[1720px] mx-auto px-4 py-12 border-t-2 border-dashed flex justify-between items-center">
 					<Link
 						href="/"
 						className="flex items-center space-x-2 font-black text-2xl"

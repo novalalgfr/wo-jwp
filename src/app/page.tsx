@@ -1,127 +1,118 @@
 'use client';
 
-import { createActionColumn, createSortableHeader, DataTable } from '@/components/custom/DataTable';
-import ImageUpload from '@/components/custom/ImageUpload';
-import { Badge } from '@/components/ui/badge';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-
-type User = {
-	id: string;
-	name: string;
-	email: string;
-	role: 'admin' | 'user';
-	status: 'active' | 'inactive';
-};
+import { Button } from '@/components/ui/button';
+import { MoveUpRight } from 'lucide-react';
 
 export default function Home() {
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-	const users: User[] = [
-		{ id: '1', name: 'John Doe', email: 'john@example.com', role: 'admin', status: 'active' },
-		{ id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'user', status: 'active' },
-		{ id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'user', status: 'inactive' },
-		{ id: '4', name: 'Alice Brown', email: 'alice@example.com', role: 'admin', status: 'active' },
-		{ id: '5', name: 'Charlie Davis', email: 'charlie@example.com', role: 'user', status: 'active' },
-		{ id: '6', name: 'Diana Wilson', email: 'diana@example.com', role: 'user', status: 'inactive' },
-		{ id: '7', name: 'Eva Miller', email: 'eva@example.com', role: 'admin', status: 'active' },
-		{ id: '8', name: 'Frank Moore', email: 'frank@example.com', role: 'user', status: 'active' },
-		{ id: '9', name: 'Grace Taylor', email: 'grace@example.com', role: 'user', status: 'inactive' },
-		{ id: '10', name: 'Henry Anderson', email: 'henry@example.com', role: 'admin', status: 'active' },
-		{ id: '11', name: 'Ivy Thomas', email: 'ivy@example.com', role: 'user', status: 'active' },
-		{ id: '12', name: 'Jack Jackson', email: 'jack@example.com', role: 'user', status: 'active' },
-		{ id: '13', name: 'Kate White', email: 'kate@example.com', role: 'admin', status: 'inactive' },
-		{ id: '14', name: 'Leo Harris', email: 'leo@example.com', role: 'user', status: 'active' },
-		{ id: '15', name: 'Mia Martin', email: 'mia@example.com', role: 'user', status: 'active' },
-		{ id: '16', name: 'Noah Thompson', email: 'noah@example.com', role: 'admin', status: 'active' },
-		{ id: '17', name: 'Olivia Garcia', email: 'olivia@example.com', role: 'user', status: 'inactive' },
-		{ id: '18', name: 'Paul Martinez', email: 'paul@example.com', role: 'user', status: 'active' },
-		{ id: '19', name: 'Quinn Robinson', email: 'quinn@example.com', role: 'admin', status: 'active' },
-		{ id: '20', name: 'Ruby Clark', email: 'ruby@example.com', role: 'user', status: 'active' }
-	];
-
-	const handleEdit = (id: string, name: string) => {
-		console.log('Edit user:', { id, name });
-	};
-
-	const handleDelete = (id: string, name: string) => {
-		console.log('Delete user:', { id, name });
-	};
-
-	const columns: ColumnDef<User>[] = [
-		{
-			accessorKey: 'name',
-			header: 'Name'
-		},
-		{
-			accessorKey: 'email',
-			header: createSortableHeader<User>('Email')
-		},
-		{
-			accessorKey: 'role',
-			header: 'Role',
-			cell: ({ row }) => (
-				<Badge variant={row.getValue('role') === 'admin' ? 'destructive' : 'secondary'}>
-					{row.getValue('role')}
-				</Badge>
-			)
-		},
-		{
-			accessorKey: 'status',
-			header: 'Status',
-			cell: ({ row }) => (
-				<Badge variant={row.getValue('status') === 'active' ? 'default' : 'outline'}>
-					{row.getValue('status')}
-				</Badge>
-			)
-		},
-		createActionColumn<User>((user) => (
-			<>
-				<DropdownMenuItem onClick={() => handleEdit(user.id, user.name)}>
-					<Edit className="mr-2 h-4 w-4" />
-					Edit
-				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => handleDelete(user.id, user.name)}>
-					<Trash2 className="mr-2 h-4 w-4" />
-					Delete
-				</DropdownMenuItem>
-			</>
-		))
-	];
-
 	return (
-		<section>
-			<div className="bg-gray-300 w-full h-[500px] rounded-lg mb-16"></div>
-			<div>
-				<h1 className="text-5xl font-bold text-center mb-8">Lorem Ipsum Dolor Sit Amet</h1>
-				<h1 className="text-base/8 text-center w-[80%] mx-auto">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum.
-				</h1>
+		<section className="space-y-6">
+			<div className="grid grid-cols-3 gap-6">
+				<div className="bg-gray-300 h-[550px] rounded-4xl"></div>
+				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
+					<h1 className="text-5xl">
+						Made with <br /> lots of love
+					</h1>
+					<p>
+						From finding your perfect wedding venue, to budgeting and concept creation, to being your
+						wedding day manager on your big day, we will take care of exactly whay you want us to do, so you
+						can relax and enjoy your wedding
+					</p>
+					<div className="flex items-center">
+						<Button className="bg-[#F6F4F0] text-base hover:bg-[#F6F4F0] text-black rounded-full p-6 pr-12 cursor-pointer">
+							Get in touch
+						</Button>
+						<Button
+							size="icon"
+							className="w-[48px] h-[48px] rounded-full -ml-10"
+						>
+							<MoveUpRight
+								className="size-5"
+								strokeWidth={1.5}
+							/>
+						</Button>
+					</div>
+				</div>
+				<div className="bg-gray-300 h-[550px] rounded-4xl"></div>
 			</div>
-			<div className="my-96 h-full">
-				<ImageUpload
-					label="Upload Foto Profil"
-					id="profile-photo"
-					value={selectedFile}
-					onChange={setSelectedFile}
-					maxSize={2}
-					previewHeight="h-92"
-					required
-				/>
+			<div className="grid grid-cols-[60%_auto] gap-6 items-center">
+				<div className="bg-[#F6F4F0] rounded-full p-8 flex items-center gap-6">
+					<h4 className="text-xl text-nowrap font-semibold">What Our Couples Say:</h4>
+					<p className="text-base">
+						<span className="italic">
+							&apos;From the beautiful decor to the seamless coordination, Bliss & Bless exceeded our
+							expectations in every way. They made our dream wedding a reality.&apos;
+						</span>
+						<span className="font-semibold">- Raya & Juna</span>
+					</p>
+				</div>
+				<div>
+					<h6 className="text-xl">
+						Planning a celebration should be a joyous journey, not a stressful one. Let us take the reins,
+						so you can savor every moment leading up to your special day
+					</h6>
+				</div>
+				<div className="grid grid-cols-3 gap-6">
+					<div className="bg-gray-300 w-full h-[276px] rounded-4xl"></div>
+					<div className="shadow-sm rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
+						<div className="flex-1 flex items-center">
+							<p className="text-lg">
+								With a keen eye for aesthetics, we turn your ideas into stunning realities
+							</p>
+						</div>
+						<Button className="bg-white hover:bg-white text-black border border-1 rounded-full cursor-pointer">
+							View our gallery <MoveUpRight />
+						</Button>
+					</div>
+					<div className="bg-[#F6F4F0] rounded-4xl p-8 text-center flex flex-col justify-between items-center h-[276px]">
+						<div className="flex-1 flex items-center">
+							<h6 className="text-4xl">120+</h6>
+						</div>
+						<p className="text-lg">Satisfied couples</p>
+					</div>
+				</div>
+				<div className="grid grid-cols-1 gap-6">
+					<div className="shadow-sm rounded-full p-6 text-lg">01. Full Service Wedding Planning</div>
+					<div className="shadow-sm rounded-full p-6 text-lg">02. A La Carte Wedding Planning</div>
+					<div className="shadow-sm rounded-full p-6 text-lg">03. Month-Of Wedding Management</div>
+				</div>
 			</div>
-			<DataTable
-				columns={columns}
-				data={users}
-				searchKey="name"
-				searchPlaceholder="Search users..."
-				pageSize={8}
-			/>
+			<div className="grid grid-cols-3 gap-6">
+				<div className="bg-gray-900 rounded-4xl grid grid-cols-1 gap-6 p-10">
+					<div className="bg-white/70 text-white rounded-full p-6 text-lg">01. Initial Consultation</div>
+					<div className="bg-white/70 text-white rounded-full p-6 text-lg">02. Planning and Design</div>
+					<div className="bg-white/70 text-white rounded-full p-6 text-lg">03. Vendor Coordination</div>
+					<div className="bg-white/70 text-white rounded-full p-6 text-lg">04. Final Preparations</div>
+					<div className="bg-white/70 text-white rounded-full p-6 text-lg">05. The Big Day</div>
+					<div className="text-base text-white mt-24">
+						From the grandest elements to the tiniest touches, we pride ourselves on our meticulous
+						attention to detail. Our goal is to create a seamless and memorable experience, leaving no stone
+						unturned.
+					</div>
+				</div>
+				<div className="grid grid-cols-1 gap-6">
+					<div className="bg-gray-300 h-[350px] rounded-4xl"></div>
+					<div className="w-full h-[300px] bg-transparent rounded-4xl flex items-center justify-center">
+						<div className="flex -space-x-42">
+							<div className="w-[350px] h-[350px] shadow-sm rounded-full flex items-center justify-center bg-white">
+								<Button
+									size="icon"
+									className="w-[64px] h-[64px] rounded-full mr-32 cursor-pointer"
+								>
+									<MoveUpRight
+										className="size-7"
+										strokeWidth={1.5}
+									/>
+								</Button>
+							</div>
+							<div className="bg-[#F6F4F0] w-[350px] h-[350px] shadow-sm rounded-full flex flex-col items-center justify-center">
+								<h6 className="text-6xl mb-1">180+</h6>
+								<p className="text-lg">projects in portfolio</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="bg-gray-300 h-[748px] rounded-4xl"></div>
+			</div>
 		</section>
 	);
 }

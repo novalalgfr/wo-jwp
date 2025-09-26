@@ -8,7 +8,7 @@ interface CardProps {
 	buttonText: string;
 	imageUrl?: string;
 	imageAlt?: string;
-	// onButtonClick?: () => void;
+	onButtonClick?: () => void;
 	className?: string;
 }
 
@@ -18,16 +18,16 @@ const Card = ({
 	buttonText,
 	imageUrl,
 	imageAlt = 'Card image',
-	// onButtonClick,
+	onButtonClick,
 	className = ''
 }: CardProps) => {
-	// const handleButtonClick = (e: React.MouseEvent) => {
-	// 	e.stopPropagation();
-	// 	onButtonClick?.();
-	// };
+	const handleButtonClick = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		onButtonClick?.();
+	};
 
 	return (
-		<div className={`cursor-pointer ${className}`}>
+		<div className={`${className}`}>
 			<div className="h-72 rounded-md mb-3 overflow-hidden relative">
 				{imageUrl ? (
 					<Image
@@ -44,8 +44,8 @@ const Card = ({
 			<h6 className="text-base font-medium">{price}</h6>
 			<h1 className="text-lg font-semibold mb-4">{title}</h1>
 			<Button
-				className="cursor-pointer rounded"
-				// onClick={handleButtonClick}
+				className="cursor-pointer"
+				onClick={handleButtonClick}
 			>
 				{buttonText}
 			</Button>

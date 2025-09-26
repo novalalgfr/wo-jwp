@@ -20,14 +20,14 @@ export function Navbar() {
 	const pathname = usePathname();
 
 	const navItems = [
-		{ title: 'Beranda', href: '/' },
-		{ title: 'Katalog Paket Wedding', href: '/katalog-paket-wedding' },
-		{ title: 'Kontak Kami', href: '/kontak-kami' }
+		{ title: 'Home', href: '/' },
+		{ title: 'Catalog', href: '/katalog-paket-wedding' },
+		{ title: 'Contact Us', href: '/kontak-kami' }
 	];
 
 	return (
 		<nav className="w-full">
-			<div className="max-w-7xl mx-auto px-4">
+			<div className="max-w-[1720px] mx-auto">
 				<div className="flex h-16 items-center justify-between">
 					{/* Logo */}
 					<div className="flex items-center space-x-4">
