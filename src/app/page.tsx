@@ -22,7 +22,9 @@ export default function Home() {
 				</div>
 				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
 					<h1 className="text-5xl">
-						Made with <br /> lots of love
+						Made with
+						<br />
+						lots of love
 					</h1>
 					<p>
 						From finding your perfect wedding venue, to budgeting and concept creation, to being your
