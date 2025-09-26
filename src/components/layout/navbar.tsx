@@ -54,7 +54,9 @@ export function Navbar() {
 													href={item.href}
 													className={cn(
 														'inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm text-black transition-all !bg-transparent',
-														isActive ? 'font-bold text-primary' : 'font-medium'
+														isActive
+															? 'font-bold text-primary'
+															: 'text-gray-600 hover:text-black transition-colors'
 													)}
 												>
 													{item.title}

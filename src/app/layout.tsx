@@ -5,7 +5,8 @@ import ClientLayout from '@/components/layout/ClientLayout';
 
 export const metadata: Metadata = {
 	title: 'Wedding Organizer',
-	description: 'A wedding organizer website built with Next.js and Tailwind CSS.'
+	description: 'A wedding organizer website built with Next.js and Tailwind CSS.',
+	icons: '/w.svg'
 };
 
 export default function RootLayout({

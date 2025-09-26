@@ -59,7 +59,7 @@ export default function Home() {
 							&apos;From the beautiful decor to the seamless coordination, W. exceeded our expectations in
 							every way. They made our dream wedding a reality.&apos;
 						</span>
-						<span className="font-semibold">- John & Jane</span>
+						<span className="font-semibold"> - John & Jane</span>
 					</p>
 				</div>
 				<div>
