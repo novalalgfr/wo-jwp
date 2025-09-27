@@ -38,13 +38,9 @@ export function SideNavbar({ isOpen, setIsOpen }: SideNavbarProps) {
 
 			<aside
 				className={`
-                    w-72 h-screen bg-white text-black flex flex-col p-6 border-r border-gray-200
-                    fixed top-0 left-0 z-40 transform transition-transform duration-300 ease-in-out
-                    
-                    /* ===== PERUBAHAN UTAMA DI SINI ===== */
-                    lg:fixed lg:translate-x-0 
-                    
-                    ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+                    w-72 h-screen bg-white text-black flex flex-col p-6 border-r border-gray-200 fixed top-0 left-0 z-40 transform transition-transform duration-300 ease-in-out lg:fixed lg:translate-x-0  ${
+						isOpen ? 'translate-x-0' : '-translate-x-full'
+					}
                 `}
 			>
 				{/* Area Atas yang Bisa Scroll */}

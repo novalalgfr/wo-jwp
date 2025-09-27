@@ -10,8 +10,7 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList
 } from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +32,7 @@ export function Navbar() {
 					<div className="flex items-center space-x-4">
 						<Link
 							href="/"
-							className="flex items-center space-x-2 font-black text-2xl"
+							className="font-black text-2xl"
 						>
 							W.
 						</Link>
@@ -89,43 +88,30 @@ export function Navbar() {
 								className="w-80"
 							>
 								<SheetHeader>
-									<SheetTitle>Menu</SheetTitle>
-									<SheetDescription>Navigate through our website</SheetDescription>
+									<SheetTitle className="font-black text-2xl">W.</SheetTitle>
 								</SheetHeader>
-								<div className="flex flex-col space-y-4 mt-4">
-									{/* Mobile Nav Items */}
-									{navItems.map((item) => {
-										const isActive = pathname === item.href;
+								<div className="flex flex-col p-6">
+									<div className="space-y-2">
+										{navItems.map((item) => {
+											const isActive = pathname === item.href;
 
-										return (
-											<Link
-												key={item.title}
-												href={item.href}
-												onClick={() => setIsOpen(false)}
-												className={cn(
-													'text-sm transition-colors hover:text-primary',
-													isActive ? 'font-bold text-primary' : 'font-medium'
-												)}
-											>
-												{item.title}
-											</Link>
-										);
-									})}
-
-									<Separator />
-
-									<Separator />
-
-									{/* Mobile CTA Buttons */}
-									{/* <div className="flex flex-col space-y-2">
-										<Button
-											variant="ghost"
-											onClick={() => setIsOpen(false)}
-										>
-											Sign In
-										</Button>
-										<Button onClick={() => setIsOpen(false)}>Get Started</Button>
-									</div> */}
+											return (
+												<Link
+													key={item.title}
+													href={item.href}
+													onClick={() => setIsOpen(false)}
+													className={cn(
+														'flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all duration-300 hover:bg-white/60 hover:backdrop-blur-sm border border-transparent hover:border-white/20 hover:shadow-sm',
+														isActive
+															? 'text-primary bg-black text-white font-semibold ring-1 ring-white/20'
+															: 'text-gray-700 hover:text-black'
+													)}
+												>
+													{item.title}
+												</Link>
+											);
+										})}
+									</div>
 								</div>
 							</SheetContent>
 						</Sheet>
