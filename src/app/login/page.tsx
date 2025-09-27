@@ -42,14 +42,10 @@ export default function LoginPage() {
 
 	return (
 		<div className="grid min-h-screen w-full lg:grid-cols-2">
-			{/* Kolom Kiri: Gambar */}
 			<div
 				className="hidden bg-cover bg-center lg:block"
-				// Ganti dengan path gambar yang Anda inginkan
 				style={{ backgroundImage: "url('/images/beranda-1.jpg')" }}
 			></div>
-
-			{/* Kolom Kanan: Form Login */}
 			<div className="flex items-center justify-center bg-white p-8">
 				<div className="w-full max-w-sm space-y-8">
 					<div className="text-center">
@@ -57,7 +53,6 @@ export default function LoginPage() {
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900">Welcome Back</h2>
 						<p className="mt-2 text-gray-600">Please enter your credentials to access the admin panel.</p>
 					</div>
-
 					<form
 						className="space-y-6"
 						onSubmit={handleSubmit}

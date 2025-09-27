@@ -275,7 +275,6 @@ export default function WebsiteProfilePage() {
 				onSubmit={handleSubmit}
 				className="space-y-8"
 			>
-				{/* Hero Section */}
 				<Card>
 					<CardHeader>
 						<CardTitle>Hero Section</CardTitle>

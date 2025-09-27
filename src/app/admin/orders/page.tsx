@@ -318,7 +318,6 @@ export default function OrdersPage() {
 				</AlertDialogContent>
 			</AlertDialog>
 
-			{/* Success Dialog */}
 			<AlertDialog
 				open={successDialog.open}
 				onOpenChange={(open) => setSuccessDialog((prev) => ({ ...prev, open }))}

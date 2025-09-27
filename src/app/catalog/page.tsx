@@ -90,10 +90,10 @@ export default function CatalogPage() {
 		return (
 			<section className="space-y-12">
 				<div className="shadow-sm rounded-4xl p-16 text-center">
-					<h1 className="text-5xl mb-4">Pilih Paket Impian Anda</h1>
+					<h1 className="text-5xl mb-4">Choose Your Dream Package</h1>
 					<p className="text-lg max-w-2xl mx-auto">
-						Kami telah menyiapkan berbagai pilihan paket yang dirancang dengan cermat untuk mewujudkan hari
-						spesial Anda.
+						We have carefully prepared a variety of packages designed to make your special day
+						unforgettable.
 					</p>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -109,13 +109,13 @@ export default function CatalogPage() {
 		return (
 			<section className="min-h-[70vh] flex items-center justify-center">
 				<div className="shadow-sm rounded-4xl p-16 text-center flex flex-col gap-6 justify-center items-center">
-					<h2 className="text-3xl font-semibold">Oops! Terjadi Kesalahan</h2>
+					<h2 className="text-3xl font-semibold">Oops! Something went wrong</h2>
 					<p className="text-lg text-gray-600">{error}</p>
 					<Button
 						onClick={fetchPaketWedding}
 						className="bg-[#F6F4F0] text-base hover:bg-gray-200 text-black rounded-full p-6"
 					>
-						Coba Lagi
+						Retry
 					</Button>
 				</div>
 			</section>
@@ -207,8 +207,6 @@ export default function CatalogPage() {
 												{selectedPackage.package_description}
 											</div>
 										</div>
-
-										{/* Tombol didorong ke bawah */}
 										<div className="mt-auto">
 											<Button
 												onClick={handleOrderPackage}

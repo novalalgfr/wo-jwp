@@ -380,7 +380,7 @@ export default function PackageCatalogPage() {
 								id="gambar_paket"
 								label="Package Image"
 								value={formData.package_image}
-								existingImageUrl={currentImageUrl} // Pass existing image URL
+								existingImageUrl={currentImageUrl}
 								onChange={(file) => setFormData((prev) => ({ ...prev, package_image: file }))}
 								maxSize={5}
 							/>
@@ -415,7 +415,6 @@ export default function PackageCatalogPage() {
 				emptyMessage="No wedding packages found."
 			/>
 
-			{/* Delete Confirmation Dialog */}
 			<AlertDialog
 				open={deleteDialog.open}
 				onOpenChange={(open) => setDeleteDialog({ open, id: null })}
@@ -439,7 +438,6 @@ export default function PackageCatalogPage() {
 				</AlertDialogContent>
 			</AlertDialog>
 
-			{/* Success Dialog */}
 			<Dialog
 				open={successDialog.open}
 				onOpenChange={(open) => setSuccessDialog({ open, type: null, message: '' })}

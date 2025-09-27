@@ -25,14 +25,11 @@ export default function ContactUsPage() {
 					start the conversation.
 				</p>
 			</div>
-
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 				<div
 					className="h-[400px] lg:h-full min-h-[500px] w-full rounded-4xl bg-cover bg-center"
 					style={{ backgroundImage: "url('/images/beranda-7.jpg')" }}
 				></div>
-
-				{/* Kolom Kanan: Detail Kontak */}
 				<div className="space-y-6">
 					<div className="bg-[#F6F4F0] rounded-4xl p-8 space-y-5">
 						<h3 className="text-2xl font-semibold">Direct Contact</h3>
@@ -97,7 +94,6 @@ export default function ContactUsPage() {
 					</div>
 				</div>
 			</div>
-
 			<div className="h-[500px] rounded-4xl overflow-hidden shadow-sm">
 				<iframe
 					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.642533039234!2d106.69083037580644!3d-6.310663261775836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69e530f242599f%3A0x8563745284752674!2sAEON%20MALL%20BSD%20CITY!5e0!3m2!1sen!2sid!4v1727360856948!5m2!1sen!2sid"

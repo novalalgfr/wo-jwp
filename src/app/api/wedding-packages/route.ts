@@ -18,7 +18,6 @@ interface WeddingPackage extends RowDataPacket {
 	package_image: string | null;
 }
 
-// Helper function to add full URL to image path
 function addImageUrl(data: WeddingPackage[], baseUrl: string) {
 	return data.map((item) => ({
 		...item,
@@ -26,14 +25,12 @@ function addImageUrl(data: WeddingPackage[], baseUrl: string) {
 	}));
 }
 
-// GET - Fetch all wedding packages
 export async function GET(request: NextRequest) {
 	try {
 		console.log('Getting wedding package data...');
 		const [rows] = await db.execute<WeddingPackage[]>('SELECT * FROM wedding_packages ORDER BY id DESC');
 		console.log('Data fetched successfully:', rows.length, 'rows');
 
-		// Add full URLs for images
 		const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
 		const dataWithUrls = addImageUrl(rows, baseUrl);
 
@@ -44,7 +41,6 @@ export async function GET(request: NextRequest) {
 	}
 }
 
-// POST - Create new wedding package
 export async function POST(request: NextRequest) {
 	try {
 		console.log('Creating wedding package...');
@@ -92,7 +88,6 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-// PUT - Update wedding package
 export async function PUT(request: NextRequest) {
 	try {
 		console.log('Updating wedding package...');
@@ -107,14 +102,12 @@ export async function PUT(request: NextRequest) {
 
 		console.log('Updating ID:', id, 'with data:', { package_name, package_description, package_price });
 
-		// Get existing record to handle image
 		const [existingRows] = await db.execute<WeddingPackage[]>(
 			'SELECT package_image FROM wedding_packages WHERE id = ?',
 			[id]
 		);
 		let package_image = existingRows[0]?.package_image;
 
-		// Handle new image upload
 		if (package_file && package_file.size > 0) {
 			const fileName = `${Date.now()}-${package_file.name}`;
 			const filePath = path.join(uploadDir, fileName);
@@ -124,7 +117,6 @@ export async function PUT(request: NextRequest) {
 
 			fs.writeFileSync(filePath, buffer);
 
-			// Delete old image if exists
 			if (package_image) {
 				const oldImagePath = path.join(process.cwd(), 'public', package_image);
 				if (fs.existsSync(oldImagePath)) {
@@ -150,7 +142,6 @@ export async function PUT(request: NextRequest) {
 	}
 }
 
-// DELETE - Delete wedding package
 export async function DELETE(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url);
@@ -162,17 +153,14 @@ export async function DELETE(request: NextRequest) {
 
 		console.log('Deleting wedding package with ID:', id);
 
-		// Get existing record to delete image
 		const [existingRows] = await db.execute<WeddingPackage[]>(
 			'SELECT package_image FROM wedding_packages WHERE id = ?',
 			[id]
 		);
 		const package_image = existingRows[0]?.package_image;
 
-		// Delete record from database
 		await db.execute<ResultSetHeader>('DELETE FROM wedding_packages WHERE id = ?', [id]);
 
-		// Delete image file if exists
 		if (package_image) {
 			const imagePath = path.join(process.cwd(), 'public', package_image);
 			if (fs.existsSync(imagePath)) {

@@ -208,7 +208,6 @@ export default function SettingPage() {
 								{message.text}
 							</div>
 						)}
-
 						<TextBox
 							label="Email"
 							placeholder="Enter your email"
@@ -219,7 +218,6 @@ export default function SettingPage() {
 							onValidationChange={handleValidationChange('email')}
 							required
 						/>
-
 						<TextBox
 							label="Current Password"
 							placeholder="Enter your current password"
@@ -230,7 +228,6 @@ export default function SettingPage() {
 							onValidationChange={handleValidationChange('current_password')}
 							required
 						/>
-
 						<TextBox
 							label="New Password"
 							placeholder="Enter new password (minimum 6 characters)"
@@ -241,7 +238,6 @@ export default function SettingPage() {
 							onValidationChange={handleValidationChange('new_password')}
 							required
 						/>
-
 						<TextBox
 							label="Confirm New Password"
 							placeholder="Re-enter your new password"
@@ -252,9 +248,7 @@ export default function SettingPage() {
 							onValidationChange={handleValidationChange('confirm_password')}
 							required
 						/>
-
 						{passwordMatchError && <span className="text-sm text-red-600">{passwordMatchError}</span>}
-
 						<div className="pt-4">
 							<Button
 								type="submit"
