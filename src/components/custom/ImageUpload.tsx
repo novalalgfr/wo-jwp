@@ -1,20 +1,20 @@
-import { Label } from '@/components/ui/label';
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
-import { Button } from '../ui/button';
+import { Button } from '../ui/button'; // Assuming this component exists
+import { Label } from '@/components/ui/label'; // Assuming this component exists
 
 interface ImageUploadProps {
 	label: string;
 	id: string;
 	value?: File | null;
-	existingImageUrl?: string | null; // Tambahkan prop untuk URL gambar existing
+	existingImageUrl?: string | null; // Add prop for existing image URL
 	onChange?: (file: File | null) => void;
 	className?: string;
 	disabled?: boolean;
 	required?: boolean;
 	accept?: string;
-	maxSize?: number;
+	maxSize?: number; // in MB
 	previewWidth?: string;
 	previewHeight?: string;
 	name?: string;
@@ -41,7 +41,7 @@ const ImageUpload = ({
 	const [hasNewFile, setHasNewFile] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	// Set preview dari existing image URL saat component mount
+	// Set preview from existing image URL on component mount
 	useEffect(() => {
 		if (existingImageUrl && !hasNewFile) {
 			setPreview(existingImageUrl);
@@ -50,10 +50,10 @@ const ImageUpload = ({
 
 	const validateFile = (file: File): string | null => {
 		if (maxSize && file.size > maxSize * 1024 * 1024) {
-			return `File terlalu besar. Maksimal ${maxSize}MB`;
+			return `File is too large. Maximum ${maxSize}MB`;
 		}
 		if (!file.type.startsWith('image/')) {
-			return 'File harus berupa gambar';
+			return 'File must be an image';
 		}
 		return null;
 	};
@@ -151,10 +151,10 @@ const ImageUpload = ({
 			{!shouldShowPreview ? (
 				<div
 					className={`
-						border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-						${dragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
-						${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-					`}
+                        border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
+                        ${dragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
+                        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                    `}
 					onDragEnter={handleDrag}
 					onDragLeave={handleDrag}
 					onDragOver={handleDrag}
@@ -163,9 +163,9 @@ const ImageUpload = ({
 				>
 					<Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
 					<p className="text-sm text-gray-600 mb-2">
-						<span className="font-medium">Klik untuk upload</span> atau drag & drop
+						<span className="font-medium">Click to upload</span> or drag & drop
 					</p>
-					<p className="text-xs text-gray-500">PNG, JPG, GIF hingga {maxSize}MB</p>
+					<p className="text-xs text-gray-500">PNG, JPG, GIF up to {maxSize}MB</p>
 				</div>
 			) : (
 				/* Preview Area */
@@ -173,13 +173,15 @@ const ImageUpload = ({
 					<div
 						className={`relative ${previewWidth} ${previewHeight} rounded-lg overflow-hidden border border-gray-300`}
 					>
-						<Image
-							src={preview}
-							alt="Preview"
-							fill
-							className="object-cover"
-							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-						/>
+						{preview && (
+							<Image
+								src={preview}
+								alt="Preview"
+								fill
+								className="object-cover"
+								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+							/>
+						)}
 
 						{/* Remove Button */}
 						{!disabled && (
@@ -210,7 +212,7 @@ const ImageUpload = ({
 							className="mt-2 text-sm transition-colors flex items-center gap-2 cursor-pointer"
 						>
 							<ImageIcon className="h-4 w-4" />
-							Ganti Gambar
+							Change Image
 						</Button>
 					)}
 				</div>

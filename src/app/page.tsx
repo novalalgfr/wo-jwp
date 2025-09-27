@@ -195,7 +195,7 @@ export default function Home() {
 
 			{/* Bottom Section */}
 			<div className="grid grid-cols-1 lg:grid-cols-3 items-start lg:items-center gap-6">
-				<div className="text-2xl md:text-3xl xl:text-5xl w-full lg:w-[70%] order-2 lg:order-1">
+				<div className="text-2xl md:text-3xl xl:text-5xl w-full lg:w-[75%] order-2 lg:order-1">
 					{data?.bottom_title}
 				</div>
 				<div className="lg:col-span-2 shadow-sm rounded-lg md:rounded-2xl xl:rounded-4xl p-4 md:p-6 text-base md:text-lg order-1 lg:order-2">

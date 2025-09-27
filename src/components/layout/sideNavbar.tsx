@@ -10,7 +10,7 @@ const navItems = [
 	{ title: 'Website Profile', href: '/admin/website-profile', icon: House },
 	{ title: 'Package Catalog', href: '/admin/package-catalog', icon: NotepadText },
 	{ title: 'Orders', href: '/admin/orders', icon: ArrowLeftRight },
-	{ title: 'Settings', href: '/admin/pengaturan', icon: Settings }
+	{ title: 'Setting', href: '/admin/setting', icon: Settings }
 ];
 
 interface SideNavbarProps {

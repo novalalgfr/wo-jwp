@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface TextBoxProps {
@@ -8,7 +9,7 @@ interface TextBoxProps {
 	placeholder: string;
 	id: string;
 	type?: 'textfield' | 'textarea' | 'number';
-	inputType?: 'text' | 'number';
+	inputType?: 'text' | 'number' | 'password';
 	value?: string;
 	onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
 	className?: string;
@@ -43,6 +44,7 @@ const TextBox = ({
 }: TextBoxProps) => {
 	const [error, setError] = useState<string>('');
 	const [isValid, setIsValid] = useState<boolean>(true);
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	const validateInput = (inputValue: string): { isValid: boolean; errorMessage?: string } => {
 		if (!inputValue) {
@@ -57,7 +59,6 @@ const TextBox = ({
 			case 'number':
 				// Validasi angka
 				const numberRegex = allowDecimals ? /^-?\d*\.?\d*$/ : /^-?\d*$/;
-
 				if (!numberRegex.test(inputValue)) {
 					return {
 						isValid: false,
@@ -97,7 +98,6 @@ const TextBox = ({
 
 		// Validasi input
 		const validationResult = validateInput(inputValue);
-
 		setIsValid(validationResult.isValid);
 		setError(validationResult.errorMessage || '');
 
@@ -112,12 +112,36 @@ const TextBox = ({
 		}
 	};
 
+	const togglePasswordVisibility = () => {
+		setShowPassword(!showPassword);
+	};
+
 	const baseClasses = `border-black focus-visible:ring-0 focus-visible:border-black py-2 ${
 		!isValid ? 'border-red-500 focus-visible:border-red-500' : ''
 	}`;
+
 	const textFieldClasses = `${baseClasses} min-h-0`;
 	const textareaClasses = `${baseClasses} min-h-32`;
-	const finalClasses = type === 'textarea' ? `${textareaClasses} ${className}` : `${textFieldClasses} ${className}`;
+
+	// Special classes for password field with icon
+	const passwordClasses = `${textFieldClasses} ${inputType === 'password' ? 'pr-12' : ''}`;
+
+	const getFinalClasses = () => {
+		if (type === 'textarea') {
+			return `${textareaClasses} ${className}`;
+		} else if (inputType === 'password') {
+			return `${passwordClasses} ${className}`;
+		} else {
+			return `${textFieldClasses} ${className}`;
+		}
+	};
+
+	const getInputType = () => {
+		if (inputType === 'password') {
+			return showPassword ? 'text' : 'password';
+		}
+		return inputType;
+	};
 
 	return (
 		<div className="grid w-full gap-3">
@@ -134,19 +158,31 @@ const TextBox = ({
 					id={id}
 					value={value}
 					onChange={handleChange}
-					className={finalClasses}
+					className={getFinalClasses()}
 					{...props}
 				/>
 			) : (
-				<Input
-					type={inputType}
-					placeholder={placeholder}
-					id={id}
-					value={value}
-					onChange={handleChange}
-					className={finalClasses}
-					{...props}
-				/>
+				<div className="relative">
+					<Input
+						type={getInputType()}
+						placeholder={placeholder}
+						id={id}
+						value={value}
+						onChange={handleChange}
+						className={getFinalClasses()}
+						{...props}
+					/>
+					{inputType === 'password' && (
+						<button
+							type="button"
+							onClick={togglePasswordVisibility}
+							className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none z-20 bg-transparent"
+							tabIndex={-1}
+						>
+							{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+						</button>
+					)}
+				</div>
 			)}
 
 			{error && <span className="text-sm text-red-600 mt-1">{error}</span>}

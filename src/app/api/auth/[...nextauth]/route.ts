@@ -6,7 +6,7 @@ import type { RowDataPacket } from 'mysql2';
 
 type UserRow = RowDataPacket & {
 	id: number;
-	nama: string;
+	name: string;
 	email: string;
 	password: string;
 };
@@ -20,39 +20,72 @@ export const authOptions: AuthOptions = {
 				password: { label: 'Password', type: 'password' }
 			},
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials.password) return null;
+				if (!credentials?.email || !credentials.password) {
+					console.log('Missing credentials');
+					return null;
+				}
 
-				const conn = await mysql.createConnection({
-					host: process.env.DB_HOST,
-					user: process.env.DB_USER,
-					password: process.env.DB_PASS,
-					database: process.env.DB_NAME
-				});
+				try {
+					console.log('=== LOGIN DEBUG ===');
+					console.log('Email received:', credentials.email);
+					console.log('Password received:', credentials.password);
 
-				const [rows] = await conn.query<UserRow[]>(
-					'SELECT id, nama, email, password FROM users WHERE email = ? LIMIT 1',
-					[credentials.email]
-				);
+					const conn = await mysql.createConnection({
+						host: process.env.DB_HOST,
+						user: process.env.DB_USER,
+						password: process.env.DB_PASS,
+						database: process.env.DB_NAME
+					});
 
-				await conn.end();
+					const [rows] = await conn.query<UserRow[]>(
+						'SELECT id, name, email, password FROM users WHERE email = ? LIMIT 1',
+						[credentials.email]
+					);
 
-				const user = rows[0];
-				if (!user) return null;
+					await conn.end();
 
-				// Sementara untuk testing - gunakan plain text comparison
-				// Ganti ini dengan bcrypt setelah password di database sudah di-hash
-				const isPasswordValid = credentials.password === user.password;
+					const user = rows[0];
+					if (!user) {
+						console.log('❌ User not found for email:', credentials.email);
+						return null;
+					}
 
-				// Untuk production, gunakan ini setelah password di-hash:
-				// const isPasswordValid = await compare(credentials.password, user.password);
+					console.log('✅ User found:', {
+						id: user.id,
+						name: user.name,
+						email: user.email
+					});
+					console.log('Hash from DB:', user.password);
+					console.log('Plain password to compare:', credentials.password);
 
-				if (!isPasswordValid) return null;
+					// Gunakan bcrypt untuk membandingkan password
+					const isPasswordValid = await compare(credentials.password, user.password);
 
-				return {
-					id: String(user.id),
-					name: user.nama,
-					email: user.email
-				};
+					console.log('Password comparison result:', isPasswordValid);
+
+					if (!isPasswordValid) {
+						console.log('❌ Password mismatch!');
+						console.log('Expected hash:', user.password);
+						console.log('Input password:', credentials.password);
+
+						// Test dengan hash manual untuk debug
+						const { hash } = await import('bcryptjs');
+						const testHash = await hash(credentials.password, 10);
+						console.log('New hash generated for input:', testHash);
+
+						return null;
+					}
+
+					console.log('✅ Login successful!');
+					return {
+						id: String(user.id),
+						name: user.name,
+						email: user.email
+					};
+				} catch (error) {
+					console.error('❌ Auth error:', error);
+					return null;
+				}
 			}
 		})
 	],
