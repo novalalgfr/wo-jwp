@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Check, X, Clock, CheckCircle } from 'lucide-react';
+import { Check, X, Clock, CheckCircle, Download } from 'lucide-react';
 import { createSortableHeader, DataTable } from '@/components/custom/DataTable';
 import {
 	AlertDialog,
@@ -141,6 +141,60 @@ export default function OrdersPage() {
 		}
 	};
 
+	const downloadOrdersCSV = () => {
+		if (orders.length === 0) {
+			alert('No orders data to download');
+			return;
+		}
+
+		// Create CSV headers
+		const headers = ['No', 'Customer Name', 'Wedding Package', 'Phone Number', 'Email', 'Order Date', 'Status'];
+
+		// Convert orders data to CSV format
+		const csvData = orders.map((order, index) => {
+			const date = new Date(order.created_at || '');
+			const formattedDate = order.created_at
+				? date.toLocaleDateString('id-ID') + ' ' + date.toLocaleTimeString('id-ID')
+				: '-';
+			const packageName = order.package_name
+				? order.package_name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())
+				: '-';
+
+			return [
+				index + 1,
+				order.customer_name,
+				packageName,
+				order.phone_number,
+				order.email,
+				formattedDate,
+				order.status.charAt(0).toUpperCase() + order.status.slice(1)
+			];
+		});
+
+		// Combine headers and data
+		const allData = [headers, ...csvData];
+
+		// Convert to CSV string
+		const csvContent = allData
+			.map((row) =>
+				row.map((field) => (typeof field === 'string' && field.includes(',') ? `"${field}"` : field)).join(',')
+			)
+			.join('\n');
+
+		// Create and download file
+		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+		const link = document.createElement('a');
+		const url = URL.createObjectURL(blob);
+
+		link.setAttribute('href', url);
+		link.setAttribute('download', `orders-list-${new Date().toISOString().split('T')[0]}.csv`);
+		link.style.visibility = 'hidden';
+
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
 	const columns: ColumnDef<Order>[] = [
 		{
 			id: 'no',
@@ -166,7 +220,7 @@ export default function OrdersPage() {
 		},
 		{
 			accessorKey: 'phone_number',
-			header: 'phone_number Number',
+			header: 'Phone Number',
 			cell: ({ row }) => <div>{row.getValue('phone_number')}</div>
 		},
 		{
@@ -262,6 +316,7 @@ export default function OrdersPage() {
 			<div>
 				<div className="flex justify-between items-center mb-6">
 					<div className="h-9 w-48 bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-9 w-32 bg-gray-200 rounded animate-pulse"></div>
 				</div>
 				<div className="">
 					<div className="h-96 bg-gray-200 rounded animate-pulse"></div>
@@ -272,8 +327,16 @@ export default function OrdersPage() {
 
 	return (
 		<div>
-			<div className="flex justify-between items-center mb-2">
+			<div className="flex justify-between items-center mb-6">
 				<h1 className="text-3xl font-bold">Orders</h1>
+				<Button
+					onClick={downloadOrdersCSV}
+					className="cursor-pointer"
+					disabled={orders.length === 0}
+				>
+					<Download className="w-4 h-4 mr-2" />
+					Download Report
+				</Button>
 			</div>
 
 			<DataTable
